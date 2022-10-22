@@ -8,17 +8,19 @@ const AdminLogin = () => {
   const initialValues = '';
   const [email, setEmail] = useState(initialValues);
   const [password, setPassword] = useState(initialValues);
-
   const [allentry, setAllentry] = useState([]);
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
+
     const newEntry = { email: email, password: password };
-    axios.post('http://127.0.0.1:8000/api/login', newEntry).then((response) => {
+
+    await axios.post('http://weblara.website/api/login', newEntry, ).then((response) => {
       console.log('Login success: ', response.data);
       if (response?.status === 200) history.push('/adminDashboard');
       else alert(response?.message);
     });
+
     // if(!newEntry.email === '' && !newEntry.email === '' ) {
     setAllentry([newEntry]);
     console.log(allentry);
