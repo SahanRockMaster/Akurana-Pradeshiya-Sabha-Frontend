@@ -1,5 +1,5 @@
 import '../styles/AdminLogin.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 
@@ -10,13 +10,21 @@ const AdminLogin = () => {
   const [password, setPassword] = useState(initialValues);
   const [allentry, setAllentry] = useState([]);
 
+  useEffect(() => {
+      let token = localStorage.getItem('token');
+      if(token != null){
+        history.push('/adminDashboard');
+      }
+  });
+
   const submitForm = async (e) => {
     e.preventDefault();
 
     const newEntry = { email: email, password: password };
 
-    await axios.post('http://weblara.website/api/login', newEntry, ).then((response) => {
-      console.log('Login success: ', response.data);
+    await axios.post('http://weblara.website/api/login', newEntry,).then((response) => {
+      console.log('Login success: ', response.data.data.token);
+      localStorage.setItem('token', response.data.data.token);
       if (response?.status === 200) history.push('/adminDashboard');
       else alert(response?.message);
     });

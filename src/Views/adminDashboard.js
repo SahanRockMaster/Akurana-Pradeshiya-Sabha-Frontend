@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
 import FileUpload from '@mui/icons-material/FileUpload';
@@ -24,6 +24,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import SandwichIcon from '@mui/icons-material/MenuRounded';
 
 import Popup from './uploadPopup';
+import { useHistory } from "react-router-dom";
 
 const style = makeStyles({
   titleItemRight: {
@@ -84,7 +85,7 @@ const columns = [
           variant="contained"
           startIcon={<UpdIcon />}
           className={classes.rowButton}
-          onClick={() => {}}
+          onClick={() => { }}
         >
           <b>Post Update</b>
         </Button>
@@ -103,7 +104,7 @@ const columns = [
           variant="contained"
           startIcon={<DelIcon />}
           className={classes.rowButton}
-          onClick={() => {}}
+          onClick={() => { }}
         >
           <b>Delete</b>
         </Button>
@@ -136,6 +137,7 @@ const rows = [
 export default function AdminDashboard() {
   const [openPopup, setOpenPopup] = React.useState(false);
   const [state, setState] = React.useState({ left: false });
+  const history = useHistory();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -148,6 +150,13 @@ export default function AdminDashboard() {
 
     setState({ ...state, [anchor]: open });
   };
+
+  useEffect(() => {
+    let token = localStorage.getItem('token');
+    if (token == null) {
+      history.push('/AdminLogin');
+    }
+  });
 
   const list = (anchor) => (
     <Box
@@ -162,7 +171,7 @@ export default function AdminDashboard() {
           'Events Portal',
           'Application Portal',
           'Blog Post View',
-          <a href="../AdminFormView">Application Form View</a> 
+          <a href="../AdminFormView">Application Form View</a>
         ].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
