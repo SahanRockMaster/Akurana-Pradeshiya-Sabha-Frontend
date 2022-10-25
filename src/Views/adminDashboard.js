@@ -26,6 +26,7 @@ import SandwichIcon from '@mui/icons-material/MenuRounded';
 import Popup from './uploadPopup';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
+import { FeedTwoTone } from '@mui/icons-material';
 
 const style = makeStyles({
   titleItemRight: {
@@ -70,73 +71,6 @@ const style = makeStyles({
 //   right: false,
 // });
 
-const postDelete = async (id) => {
-  await axios.delete(`http://weblara.website/api/posts/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` } })
-    .then((response) => {
-      if (response?.status === 200) {
-        console.log(response);
-        alert("Post Deleted!");
-      }
-    }).catch((error) => {
-      console.log(error);
-    });
-}
-
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'name', headerName: 'Post Title', width: 260 },
-  { field: 'description', headerName: 'Post Description', width: 350 },
-  {
-    field: 'update action',
-    headerName: 'Update Action',
-    type: 'number',
-    width: 180,
-    renderCell: (cellValues) => {
-      const classes = style();
-      return (
-        <Button
-          variant="contained"
-          startIcon={<UpdIcon />}
-          className={classes.rowButton}
-          onClick={() => { }}
-        >
-          <b>Post Update</b>
-        </Button>
-      );
-    },
-  },
-  {
-    field: 'delete action',
-    headerName: 'Delete Action',
-    type: 'number',
-    width: 160,
-    renderCell: (cellValues) => {
-      const classes = style();
-      return (
-        <Button
-          variant="contained"
-          startIcon={<DelIcon />}
-          className={classes.rowButton}
-          onClick={() => {
-            postDelete(cellValues.row.id);
-          }}
-        >
-          <b>Delete</b>
-        </Button>
-      );
-    },
-  },
-  // {
-  //   field: 'fullName',
-  //   headerName: 'Full name',
-  //   description: 'This column has a value getter and is not sortable.',
-  //   sortable: false,
-  //   width: 160,
-  //   valueGetter: (params) =>
-  //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-  // },
-];
-
 export default function AdminDashboard() {
   const [openPopup, setOpenPopup] = React.useState(false);
   const [state, setState] = React.useState({ left: false });
@@ -176,6 +110,65 @@ export default function AdminDashboard() {
         console.log(error.response);
       });
   }
+
+  const postDelete = async (id) => {
+    await axios.delete(`http://weblara.website/api/posts/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` } })
+      .then((response) => {
+        if (response?.status === 200) {
+          console.log(response);
+          alert("Post Deleted!");
+          fetchData(localStorage.getItem('token'));
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'Post Title', width: 260 },
+    { field: 'description', headerName: 'Post Description', width: 350 },
+    {
+      field: 'update action',
+      headerName: 'Update Action',
+      type: 'number',
+      width: 180,
+      renderCell: (cellValues) => {
+        const classes = style();
+        return (
+          <Button
+            variant="contained"
+            startIcon={<UpdIcon />}
+            className={classes.rowButton}
+            onClick={() => { }}
+          >
+            <b>Post Update</b>
+          </Button>
+        );
+      },
+    },
+    {
+      field: 'delete action',
+      headerName: 'Delete Action',
+      type: 'number',
+      width: 160,
+      renderCell: (cellValues) => {
+        const classes = style();
+        return (
+          <Button
+            variant="contained"
+            startIcon={<DelIcon />}
+            className={classes.rowButton}
+            onClick={() => {
+              postDelete(cellValues.row.id);
+            }}
+          >
+            <b>Delete</b>
+          </Button>
+        );
+      },
+    }
+  ];
 
   const signout = () => {
     console.log(localStorage.getItem('token'));
@@ -234,6 +227,7 @@ export default function AdminDashboard() {
   );
 
   const classes = style();
+
   return (
     <div>
       <Button
