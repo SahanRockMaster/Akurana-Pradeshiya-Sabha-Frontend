@@ -25,7 +25,6 @@ const AdminLogin = () => {
     const newEntry = { email: email, password: password };
 
     await axios.post('http://weblara.website/api/login', newEntry,).then((response) => {
-      console.log(response);
       localStorage.setItem('token', response.data.data.token);
       if (response?.status === 200){
         localStorage.setItem('user', response.data.data.name);
@@ -41,7 +40,7 @@ const AdminLogin = () => {
 
     // if(!newEntry.email === '' && !newEntry.email === '' ) {
     setAllentry([newEntry]);
-    console.log(allentry);
+    // console.log(allentry);
     // }
   };
 

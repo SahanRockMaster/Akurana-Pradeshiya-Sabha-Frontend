@@ -25,6 +25,7 @@ import SandwichIcon from '@mui/icons-material/MenuRounded';
 
 import Popup from './uploadPopup';
 import { useHistory } from "react-router-dom";
+import axios from 'axios';
 
 const style = makeStyles({
   titleItemRight: {
@@ -69,9 +70,21 @@ const style = makeStyles({
 //   right: false,
 // });
 
+const postDelete = async (id) => {
+  await axios.get(`http://weblara.website/api/posts/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` } })
+    .then((response) => {
+      if (response?.status === 200) {
+        console.log(response);
+        console.log('deleted');
+      }
+    }).catch((error) => {
+      console.log(error.response);
+    });
+}
+
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'title', headerName: 'Post Title', width: 260 },
+  { field: 'name', headerName: 'Post Title', width: 260 },
   { field: 'description', headerName: 'Post Description', width: 350 },
   {
     field: 'update action',
@@ -104,7 +117,9 @@ const columns = [
           variant="contained"
           startIcon={<DelIcon />}
           className={classes.rowButton}
-          onClick={() => { }}
+          onClick={() => {
+            postDelete(cellValues.row.id);
+          }}
         >
           <b>Delete</b>
         </Button>
@@ -122,23 +137,12 @@ const columns = [
   // },
 ];
 
-const rows = [
-  { id: 1, description: 'Snow', title: 'Jon', updateAction: 34 },
-  { id: 2, description: 'Lannister', title: 'Cersei', updateAction: 34 },
-  { id: 3, description: 'Lannister', title: 'Jaime', updateAction: 34 },
-  { id: 4, description: 'Stark', title: 'Arya', updateAction: 34 },
-  { id: 5, description: 'Targaryen', title: 'Daenerys', updateAction: 34 },
-  { id: 6, description: 'Melisandre', title: null, updateAction: 34 },
-  { id: 7, description: 'Clifford', title: 'Ferrara', updateAction: 34 },
-  { id: 8, description: 'Frances', title: 'Rossini', updateAction: 34 },
-  { id: 9, description: 'Roxie', title: 'Harvey', updateAction: 34 },
-];
-
 export default function AdminDashboard() {
   const [openPopup, setOpenPopup] = React.useState(false);
   const [state, setState] = React.useState({ left: false });
   const history = useHistory();
   const [username, setUsername] = React.useState();
+  const [rows, setRows] = React.useState([]);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -158,7 +162,20 @@ export default function AdminDashboard() {
     if (token == null) {
       history.push('/AdminLogin');
     }
-  });
+    fetchData(token);
+  }, []);
+
+  async function fetchData(token) {
+    await axios.get('http://weblara.website/api/posts', { headers: { "Authorization": `Bearer ${token}` } })
+      .then((response) => {
+        if (response?.status === 200) {
+          console.log(response.data.data);
+          setRows(response.data.data);
+        }
+      }).catch((error) => {
+        console.log(error.response);
+      });
+  }
 
   const signout = () => {
     console.log(localStorage.getItem('token'));
