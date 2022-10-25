@@ -25,8 +25,12 @@ const AdminLogin = () => {
     const newEntry = { email: email, password: password };
 
     await axios.post('http://weblara.website/api/login', newEntry,).then((response) => {
+      console.log(response);
       localStorage.setItem('token', response.data.data.token);
-      if (response?.status === 200) history.push('/adminDashboard');
+      if (response?.status === 200){
+        localStorage.setItem('user', response.data.data.name);
+        history.push('/adminDashboard');
+      };
     }).catch((error) => {
       if (error.response.status === 401) {
         setError(error.response.data.message);

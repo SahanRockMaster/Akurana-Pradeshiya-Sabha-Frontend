@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
 import FileUpload from '@mui/icons-material/FileUpload';
@@ -138,6 +138,7 @@ export default function AdminDashboard() {
   const [openPopup, setOpenPopup] = React.useState(false);
   const [state, setState] = React.useState({ left: false });
   const history = useHistory();
+  const [username, setUsername] = React.useState();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -153,6 +154,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     let token = localStorage.getItem('token');
+    setUsername(localStorage.getItem('user'));
     if (token == null) {
       history.push('/AdminLogin');
     }
@@ -172,7 +174,7 @@ export default function AdminDashboard() {
     >
       <List>
         {[
-          'User',
+          `User ${username !== null ? ': ' + username : ''}`,
           'Events Portal',
           'Application Portal',
           'Blog Post View',
