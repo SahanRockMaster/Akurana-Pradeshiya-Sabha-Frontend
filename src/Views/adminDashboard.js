@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
 import FileUpload from '@mui/icons-material/FileUpload';
@@ -71,14 +71,14 @@ const style = makeStyles({
 // });
 
 const postDelete = async (id) => {
-  await axios.get(`http://weblara.website/api/posts/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` } })
+  await axios.delete(`http://weblara.website/api/posts/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` } })
     .then((response) => {
       if (response?.status === 200) {
         console.log(response);
-        console.log('deleted');
+        alert("Post Deleted!");
       }
     }).catch((error) => {
-      console.log(error.response);
+      console.log(error);
     });
 }
 
