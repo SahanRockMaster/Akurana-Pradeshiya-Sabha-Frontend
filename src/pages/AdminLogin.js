@@ -10,11 +10,13 @@ const AdminLogin = () => {
   const [password, setPassword] = useState(initialValues);
   const [allentry, setAllentry] = useState([]);
 
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-      let token = localStorage.getItem('token');
-      if(token != null){
-        history.push('/adminDashboard');
-      }
+    let token = localStorage.getItem('token');
+    if (token != null) {
+      history.push('/adminDashboard');
+    }
   });
 
   const submitForm = async (e) => {
@@ -23,10 +25,14 @@ const AdminLogin = () => {
     const newEntry = { email: email, password: password };
 
     await axios.post('http://weblara.website/api/login', newEntry,).then((response) => {
-      console.log('Login success: ', response.data.data.token);
       localStorage.setItem('token', response.data.data.token);
       if (response?.status === 200) history.push('/adminDashboard');
-      else alert(response?.message);
+    }).catch((error) => {
+      if (error.response.status === 401) {
+        setError(error.response.data.message);
+      }else{
+        setError('Login Failed! Try Again!');
+      }
     });
 
     // if(!newEntry.email === '' && !newEntry.email === '' ) {
@@ -79,6 +85,12 @@ const AdminLogin = () => {
           ></input>
         </div>
 
+        {error === null ? (
+          <div></div>
+        ) : (
+          <div class='errorContainer'>{error}</div>
+        )}
+
         <button type="submit" onClick={submitForm} className="btn-submit">
           Login
         </button>
@@ -87,7 +99,7 @@ const AdminLogin = () => {
         </button>
       </form>
 
-      <div className="result">
+      {/* <div className="result">
         {allentry.map((currentElement) => {
           return (
             <div className="show">
@@ -98,7 +110,7 @@ const AdminLogin = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </>
   );
 };

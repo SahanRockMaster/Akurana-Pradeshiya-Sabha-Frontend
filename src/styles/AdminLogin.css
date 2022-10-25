@@ -89,5 +89,13 @@ form {
     color: #fff;
   }
   
-
+.errorContainer{
+  margin-top: 20px;
+  margin-bottom: 8px;
+  border: 1px dashed #000;
+  text-align: center;
+  color: red;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
   

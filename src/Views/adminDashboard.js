@@ -158,6 +158,11 @@ export default function AdminDashboard() {
     }
   });
 
+  const signout = () => {
+    console.log(localStorage.getItem('token'));
+    localStorage.removeItem('token');
+  }
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
@@ -196,7 +201,7 @@ export default function AdminDashboard() {
       <Divider />
       <List>
         {['Sign Out'].map((text, index) => (
-          <ListItem key={text} disablePadding>
+          <ListItem key={text} disablePadding onClick={signout}>
             <ListItemButton>
               <ListItemIcon>
                 {index % 2 === 0 ? <LogoutIcon /> : <MailIcon />}
