@@ -267,8 +267,8 @@ export default function AdminDashboard() {
       <h1 align="center">Admin Dashboard</h1>
       <div
         style={{
-          height: 400,
-          width: '90%',
+          height: 380,
+          width: '88%',
           paddingTop: 90,
           paddingLeft: 70,
           paddingRight: 90,
