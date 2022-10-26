@@ -1,5 +1,5 @@
 import '../styles/AdminLogin.css';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
@@ -8,20 +8,20 @@ const AdminLogin = () => {
   const initialValues = '';
   const [email, setEmail] = useState(initialValues);
   const [password, setPassword] = useState(initialValues);
-
   const [allentry, setAllentry] = useState([]);
 
   const [error, setError] = useState(null);
 
   useEffect(() => {
-      let token = localStorage.getItem('token');
-      if(token != null){
-        history.push('/adminDashboard');
-      }
+    let token = localStorage.getItem('token');
+    if (token != null) {
+      history.push('/adminDashboard');
+    }
   });
 
   const submitForm = async (e) => {
     e.preventDefault();
+
     const newEntry = { email: email, password: password };
 
     await axios.post('http://127.0.0.1:8000/api/login', newEntry,).then((response) => {
@@ -40,7 +40,7 @@ const AdminLogin = () => {
 
     // if(!newEntry.email === '' && !newEntry.email === '' ) {
     setAllentry([newEntry]);
-    console.log(allentry);
+    // console.log(allentry);
     // }
   };
 
@@ -88,6 +88,12 @@ const AdminLogin = () => {
           ></input>
         </div>
 
+        {error === null ? (
+          <div></div>
+        ) : (
+          <div class='errorContainer'>{error}</div>
+        )}
+
         <button type="submit" onClick={submitForm} className="btn-submit">
           Login
         </button>
@@ -96,7 +102,7 @@ const AdminLogin = () => {
         </button>
       </form>
 
-      <div className="result">
+      {/* <div className="result">
         {allentry.map((currentElement) => {
           return (
             <div className="show">
@@ -107,7 +113,7 @@ const AdminLogin = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </>
   );
 };
