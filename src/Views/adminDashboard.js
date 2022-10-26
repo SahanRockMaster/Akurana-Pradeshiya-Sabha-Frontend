@@ -70,51 +70,6 @@ const style = makeStyles({
 // });
 
 export default function AdminDashboard() {
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Post Title', width: 260 },
-    { field: 'description', headerName: 'Post Description', width: 350 },
-    {
-      field: 'update action',
-      headerName: 'Update Action',
-      type: 'number',
-      width: 180,
-      renderCell: (cellValues) => {
-        const classes = style();
-        return (
-          <Button
-            variant="contained"
-            startIcon={<UpdIcon />}
-            className={classes.rowButton}
-            onClick={() => {}}
-          >
-            <b>Post Update</b>
-          </Button>
-        );
-      },
-    },
-    {
-      field: 'delete action',
-      headerName: 'Delete Action',
-      type: 'number',
-      width: 160,
-      renderCell: (cellValues) => {
-        const classes = style();
-        return (
-          <Button
-            variant="contained"
-            startIcon={<DelIcon />}
-            className={classes.rowButton}
-            // onClick={() => {
-            //   postDelete(cellValues.row.id);
-            // }}
-          >
-            <b>Delete</b>
-          </Button>
-        );
-      },
-    },
-  ];
   const [openPopup, setOpenPopup] = React.useState(false);
   const [state, setState] = React.useState({ left: false });
   const history = useHistory();
