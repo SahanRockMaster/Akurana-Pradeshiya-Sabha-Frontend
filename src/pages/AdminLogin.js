@@ -1,7 +1,7 @@
 import '../styles/AdminLogin.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 const AdminLogin = () => {
   const history = useHistory();
@@ -24,7 +24,7 @@ const AdminLogin = () => {
 
     const newEntry = { email: email, password: password };
 
-    await axios.post('http://local.backend-dev/api/login', newEntry,).then((response) => {
+    await axios.post('http://127.0.0.1:8000/api/login', newEntry,).then((response) => {
       localStorage.setItem('token', response.data.data.token);
       if (response?.status === 200){
         localStorage.setItem('user', response.data.data.name);

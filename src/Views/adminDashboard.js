@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
 import FileUpload from '@mui/icons-material/FileUpload';
 import { makeStyles } from '@material-ui/core/styles';
-
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
@@ -22,7 +21,6 @@ import ViewIcon from '@mui/icons-material/Visibility';
 import DashboardIcon from '@mui/icons-material/Speed';
 import MailIcon from '@mui/icons-material/Mail';
 import SandwichIcon from '@mui/icons-material/MenuRounded';
-
 import Popup from './uploadPopup';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
@@ -72,6 +70,51 @@ const style = makeStyles({
 // });
 
 export default function AdminDashboard() {
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'Post Title', width: 260 },
+    { field: 'description', headerName: 'Post Description', width: 350 },
+    {
+      field: 'update action',
+      headerName: 'Update Action',
+      type: 'number',
+      width: 180,
+      renderCell: (cellValues) => {
+        const classes = style();
+        return (
+          <Button
+            variant="contained"
+            startIcon={<UpdIcon />}
+            className={classes.rowButton}
+            onClick={() => {}}
+          >
+            <b>Post Update</b>
+          </Button>
+        );
+      },
+    },
+    {
+      field: 'delete action',
+      headerName: 'Delete Action',
+      type: 'number',
+      width: 160,
+      renderCell: (cellValues) => {
+        const classes = style();
+        return (
+          <Button
+            variant="contained"
+            startIcon={<DelIcon />}
+            className={classes.rowButton}
+            // onClick={() => {
+            //   postDelete(cellValues.row.id);
+            // }}
+          >
+            <b>Delete</b>
+          </Button>
+        );
+      },
+    },
+  ];
   const [openPopup, setOpenPopup] = React.useState(false);
   const [state, setState] = React.useState({ left: false });
   const history = useHistory();
@@ -188,7 +231,9 @@ export default function AdminDashboard() {
           'Events Portal',
           'Application Portal',
           'Blog Post View',
-          <a href="../AdminFormView">Application Form View</a>
+
+          <a href="../BlogPostPortal">Blog Post View</a>,
+          <a href="../AdminFormView">Application Form View</a>,
         ].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
