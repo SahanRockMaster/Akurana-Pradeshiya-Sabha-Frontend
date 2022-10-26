@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
 import FileUpload from '@mui/icons-material/FileUpload';
 import { makeStyles } from '@material-ui/core/styles';
-
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
@@ -22,7 +21,6 @@ import ViewIcon from '@mui/icons-material/Visibility';
 import DashboardIcon from '@mui/icons-material/Speed';
 import MailIcon from '@mui/icons-material/Mail';
 import SandwichIcon from '@mui/icons-material/MenuRounded';
-
 import Popup from './uploadPopup';
 
 const style = makeStyles({
@@ -68,74 +66,154 @@ const style = makeStyles({
 //   right: false,
 // });
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'title', headerName: 'Post Title', width: 260 },
-  { field: 'description', headerName: 'Post Description', width: 350 },
-  {
-    field: 'update action',
-    headerName: 'Update Action',
-    type: 'number',
-    width: 180,
-    renderCell: (cellValues) => {
-      const classes = style();
-      return (
-        <Button
-          variant="contained"
-          startIcon={<UpdIcon />}
-          className={classes.rowButton}
-          onClick={() => {}}
-        >
-          <b>Post Update</b>
-        </Button>
-      );
-    },
-  },
-  {
-    field: 'delete action',
-    headerName: 'Delete Action',
-    type: 'number',
-    width: 160,
-    renderCell: (cellValues) => {
-      const classes = style();
-      return (
-        <Button
-          variant="contained"
-          startIcon={<DelIcon />}
-          className={classes.rowButton}
-          onClick={() => {}}
-        >
-          <b>Delete</b>
-        </Button>
-      );
-    },
-  },
-  // {
-  //   field: 'fullName',
-  //   headerName: 'Full name',
-  //   description: 'This column has a value getter and is not sortable.',
-  //   sortable: false,
-  //   width: 160,
-  //   valueGetter: (params) =>
-  //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-  // },
-];
+// export default function AdminDashboard() {
+//   const [openPopup, setOpenPopup] = React.useState(false);
+//   const [state, setState] = React.useState({ left: false });
+//   const history = useHistory();
+//   const [username, setUsername] = React.useState();
+//   const [rows, setRows] = React.useState([]);
 
-const rows = [
-  { id: 1, description: 'Snow', title: 'Jon', updateAction: 34 },
-  { id: 2, description: 'Lannister', title: 'Cersei', updateAction: 34 },
-  { id: 3, description: 'Lannister', title: 'Jaime', updateAction: 34 },
-  { id: 4, description: 'Stark', title: 'Arya', updateAction: 34 },
-  { id: 5, description: 'Targaryen', title: 'Daenerys', updateAction: 34 },
-  { id: 6, description: 'Melisandre', title: null, updateAction: 34 },
-  { id: 7, description: 'Clifford', title: 'Ferrara', updateAction: 34 },
-  { id: 8, description: 'Frances', title: 'Rossini', updateAction: 34 },
-  { id: 9, description: 'Roxie', title: 'Harvey', updateAction: 34 },
-];
+//   const toggleDrawer = (anchor, open) => (event) => {
+//     if (
+//       event &&
+//       event.type === 'keydown' &&
+//       (event.key === 'Tab' || event.key === 'Shift')
+//     ) {
+//       return;
+//     }
+
+//     setState({ ...state, [anchor]: open });
+//   };
+
+//   useEffect(() => {
+//     let token = localStorage.getItem('token');
+//     setUsername(localStorage.getItem('user'));
+//     if (token == null) {
+//       history.push('/AdminLogin');
+//     }
+//     fetchData(token);
+//   }, []);
+
+//   async function fetchData(token) {
+//     await axios.get('http://local.backend-dev/api/posts', { headers: { "Authorization": `Bearer ${token}` } })
+//       .then((response) => {
+//         if (response?.status === 200) {
+//           console.log(response.data.data);
+//           setRows(response.data.data);
+//         }
+//       }).catch((error) => {
+//         console.log(error.response);
+//       });
+//   }
+
+//   const postDelete = async (id) => {
+//     await axios.delete(`http://local.backend-dev/api/posts/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` } })
+//       .then((response) => {
+//         if (response?.status === 200) {
+//           console.log(response);
+//           alert("Post Deleted!");
+//           fetchData(localStorage.getItem('token'));
+//         }
+//       }).catch((error) => {
+//         console.log(error);
+//       });
+//   }
+
+//   const columns = [
+//     { field: 'id', headerName: 'ID', width: 70 },
+//     { field: 'name', headerName: 'Post Title', width: 260 },
+//     { field: 'description', headerName: 'Post Description', width: 350 },
+//     {
+//       field: 'update action',
+//       headerName: 'Update Action',
+//       type: 'number',
+//       width: 180,
+//       renderCell: (cellValues) => {
+//         const classes = style();
+//         return (
+//           <Button
+//             variant="contained"
+//             startIcon={<UpdIcon />}
+//             className={classes.rowButton}
+//             onClick={() => { }}
+//           >
+//             <b>Post Update</b>
+//           </Button>
+//         );
+//       },
+//     },
+//     {
+//       field: 'delete action',
+//       headerName: 'Delete Action',
+//       type: 'number',
+//       width: 160,
+//       renderCell: (cellValues) => {
+//         const classes = style();
+//         return (
+//           <Button
+//             variant="contained"
+//             startIcon={<DelIcon />}
+//             className={classes.rowButton}
+//             onClick={() => {
+//               postDelete(cellValues.row.id);
+//             }}
+//           >
+//             <b>Delete</b>
+//           </Button>
+//         );
+//       },
+//     }
+//   ];
 
 export default function AdminDashboard() {
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'Post Title', width: 260 },
+    { field: 'description', headerName: 'Post Description', width: 350 },
+    {
+      field: 'update action',
+      headerName: 'Update Action',
+      type: 'number',
+      width: 180,
+      renderCell: (cellValues) => {
+        const classes = style();
+        return (
+          <Button
+            variant="contained"
+            startIcon={<UpdIcon />}
+            className={classes.rowButton}
+            onClick={() => {}}
+          >
+            <b>Post Update</b>
+          </Button>
+        );
+      },
+    },
+    {
+      field: 'delete action',
+      headerName: 'Delete Action',
+      type: 'number',
+      width: 160,
+      renderCell: (cellValues) => {
+        const classes = style();
+        return (
+          <Button
+            variant="contained"
+            startIcon={<DelIcon />}
+            className={classes.rowButton}
+            // onClick={() => {
+            //   postDelete(cellValues.row.id);
+            // }}
+          >
+            <b>Delete</b>
+          </Button>
+        );
+      },
+    },
+  ];
   const [openPopup, setOpenPopup] = React.useState(false);
   const [state, setState] = React.useState({ left: false });
+  const [rows] = React.useState([]);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -162,7 +240,8 @@ export default function AdminDashboard() {
           'Events Portal',
           'Application Portal',
           'Blog Post View',
-          <a href="../AdminFormView">Application Form View</a> 
+          <a href="../BlogPostPortal">Blog Post View</a>,
+          <a href="../AdminFormView">Application Form View</a>,
         ].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>

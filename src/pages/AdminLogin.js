@@ -1,7 +1,7 @@
 import '../styles/AdminLogin.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 const AdminLogin = () => {
   const history = useHistory();
@@ -11,14 +11,33 @@ const AdminLogin = () => {
 
   const [allentry, setAllentry] = useState([]);
 
-  const submitForm = (e) => {
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+      let token = localStorage.getItem('token');
+      if(token != null){
+        history.push('/adminDashboard');
+      }
+  });
+
+  const submitForm = async (e) => {
     e.preventDefault();
     const newEntry = { email: email, password: password };
-    axios.post('http://127.0.0.1:8000/api/login', newEntry).then((response) => {
-      console.log('Login success: ', response.data);
-      if (response?.status === 200) history.push('/adminDashboard');
-      else alert(response?.message);
+
+    await axios.post('http://127.0.0.1:8000/api/login', newEntry,).then((response) => {
+      localStorage.setItem('token', response.data.data.token);
+      if (response?.status === 200){
+        localStorage.setItem('user', response.data.data.name);
+        history.push('/adminDashboard');
+      };
+    }).catch((error) => {
+      if (error.response.status === 401) {
+        setError(error.response.data.message);
+      }else{
+        setError('Login Failed! Try Again!');
+      }
     });
+
     // if(!newEntry.email === '' && !newEntry.email === '' ) {
     setAllentry([newEntry]);
     console.log(allentry);
