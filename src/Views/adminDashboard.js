@@ -70,6 +70,7 @@ const style = makeStyles({
 // });
 
 export default function AdminDashboard() {
+
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'Post Title', width: 260 },
@@ -115,6 +116,7 @@ export default function AdminDashboard() {
       },
     },
   ];
+
   const [openPopup, setOpenPopup] = React.useState(false);
   const [state, setState] = React.useState({ left: false });
   const history = useHistory();
@@ -274,8 +276,8 @@ export default function AdminDashboard() {
       <h1 align="center">Admin Dashboard</h1>
       <div
         style={{
-          height: 400,
-          width: '90%',
+          height: 380,
+          width: '88%',
           paddingTop: 90,
           paddingLeft: 70,
           paddingRight: 90,
