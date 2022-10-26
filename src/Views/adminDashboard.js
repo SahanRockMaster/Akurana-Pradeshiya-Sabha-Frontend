@@ -100,7 +100,7 @@ export default function AdminDashboard() {
   }, []);
 
   async function fetchData(token) {
-    await axios.get('http://weblara.website/api/posts', { headers: { "Authorization": `Bearer ${token}` } })
+    await axios.get('http://local.backend-dev/api/posts', { headers: { "Authorization": `Bearer ${token}` } })
       .then((response) => {
         if (response?.status === 200) {
           console.log(response.data.data);
@@ -112,7 +112,7 @@ export default function AdminDashboard() {
   }
 
   const postDelete = async (id) => {
-    await axios.delete(`http://weblara.website/api/posts/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` } })
+    await axios.delete(`http://local.backend-dev/api/posts/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` } })
       .then((response) => {
         if (response?.status === 200) {
           console.log(response);

@@ -24,7 +24,7 @@ const AdminLogin = () => {
 
     const newEntry = { email: email, password: password };
 
-    await axios.post('http://weblara.website/api/login', newEntry,).then((response) => {
+    await axios.post('http://local.backend-dev/api/login', newEntry,).then((response) => {
       localStorage.setItem('token', response.data.data.token);
       if (response?.status === 200){
         localStorage.setItem('user', response.data.data.name);
