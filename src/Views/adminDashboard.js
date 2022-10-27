@@ -146,7 +146,7 @@ export default function AdminDashboard() {
 
   async function fetchData(token) {
     await axios
-      .get('http://127.0.0.1:8000/api/posts', {
+      .get('http://local.backend-dev/api/posts', {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -162,7 +162,7 @@ export default function AdminDashboard() {
 
   const postDelete = async (id) => {
     await axios
-      .delete(`http://127.0.0.1:8000/api/posts/${id}`, {
+      .delete(`http://local.backend-dev/api/posts/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       })
       .then((response) => {
@@ -178,8 +178,8 @@ export default function AdminDashboard() {
   };
 
   const signout = () => {
-    console.log(localStorage.getItem('token'));
     localStorage.removeItem('token');
+    history.push('/AdminLogin');
   };
 
   const list = (anchor) => (
