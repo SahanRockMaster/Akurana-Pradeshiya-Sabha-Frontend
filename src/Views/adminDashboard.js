@@ -146,7 +146,7 @@ export default function AdminDashboard() {
 
   async function fetchData(token) {
     await axios
-      .get('http://local.backend-dev/api/posts', {
+      .get('http://local.backend-dev.com/api/posts', {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -162,7 +162,7 @@ export default function AdminDashboard() {
 
   const postDelete = async (id) => {
     await axios
-      .delete(`http://local.backend-dev/api/posts/${id}`, {
+      .delete(`http://local.backend-dev.com/api/posts/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       })
       .then((response) => {
