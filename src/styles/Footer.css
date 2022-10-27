@@ -1,0 +1,90 @@
+.footer {
+  width: 100%;
+  height: 200px;
+  background-color: #ffaf7a;
+  background: linear-gradient(90deg, #ff6600 0%, #ff8b3d 75%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 10px;
+}
+
+.socialMedia svg {
+  color: white;
+  margin: 20px;
+  font-size: 70px;
+  cursor: pointer;
+}
+
+.footer p {
+  color: white;
+}
+
+.table1 {
+  border-collapse: collapse;
+  position: absolute;
+  left: 400px;
+  top: 750px;
+}
+
+.tableData {
+  border-collapse: collapse;
+  padding-top: 80px;
+  padding-bottom: 20px;
+  padding-left: 50px;
+  padding-right: 150px;
+}
+
+.logoloc {
+  width: 100px;
+  height: 100px;
+  /*  object-fit: none; */
+  /*  object-position: left top; */
+  /*  float: left; */
+  margin: 2000 px -500 px;
+  padding-left: 0px;
+  padding-right: 1300px;
+}
+
+.tableheader2 {
+  border-collapse: collapse;
+  padding-top: 120px;
+  padding-bottom: 20px;
+  padding-left: 50px;
+  padding-right: 150px;
+}
+
+.table2 {
+  border-collapse: collapse;
+  position: absolute;
+  left: 60px;
+  top: 810px;
+}
+
+.tableData3 {
+  border-collapse: collapse;
+  padding-top: 80px;
+  padding-bottom: 20px;
+  padding-left: 0px;
+  padding-right: 150px;
+  border-spacing: 20px;
+}
+
+.copyright {
+  top: 0px;
+  bottom: 40px;
+}
+
+.tablerow {
+  border-spacing: 20px 100px;
+  padding-top: 400px;
+  padding-bottom: 600px;
+}
+
+.newtb {
+  padding-top: 1px;
+  padding-bottom: px;
+  padding-left: 1px;
+  padding-right: 40px;
+}
