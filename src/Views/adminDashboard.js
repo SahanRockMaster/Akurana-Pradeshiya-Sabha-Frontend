@@ -22,7 +22,7 @@ import DashboardIcon from '@mui/icons-material/Speed';
 import MailIcon from '@mui/icons-material/Mail';
 import SandwichIcon from '@mui/icons-material/MenuRounded';
 import Popup from './uploadPopup';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { FeedTwoTone } from '@mui/icons-material';
 
@@ -70,6 +70,53 @@ const style = makeStyles({
 // });
 
 export default function AdminDashboard() {
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'Post Title', width: 260 },
+    { field: 'description', headerName: 'Post Description', width: 350 },
+    {
+      field: 'update action',
+      headerName: 'Update Action',
+      type: 'number',
+      width: 180,
+      renderCell: (cellValues) => {
+        const classes = style();
+        return (
+          <Button
+            variant="contained"
+            startIcon={<UpdIcon />}
+            className={classes.rowButton}
+            onClick={() => {}}
+          >
+            <b>Post Update</b>
+          </Button>
+        );
+      },
+    },
+    {
+      field: 'delete action',
+      headerName: 'Delete Action',
+      type: 'number',
+      width: 160,
+      renderCell: (cellValues) => {
+        const classes = style();
+        return (
+          <Button
+            variant="contained"
+            startIcon={<DelIcon />}
+            className={classes.rowButton}
+            onClick={() => {
+              postDelete(cellValues.row.id);
+            }}
+          >
+            <b>Delete</b>
+          </Button>
+        );
+      },
+    },
+  ];
+
   const [openPopup, setOpenPopup] = React.useState(false);
   const [state, setState] = React.useState({ left: false });
   const history = useHistory();
@@ -98,80 +145,42 @@ export default function AdminDashboard() {
   }, []);
 
   async function fetchData(token) {
-    await axios.get('http://local.backend-dev/api/posts', { headers: { "Authorization": `Bearer ${token}` } })
+    await axios
+      .get('http://local.backend-dev/api/posts', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
         if (response?.status === 200) {
           console.log(response.data.data);
           setRows(response.data.data);
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error.response);
       });
   }
 
   const postDelete = async (id) => {
-    await axios.delete(`http://local.backend-dev/api/posts/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` } })
+    await axios
+      .delete(`http://local.backend-dev/api/posts/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      })
       .then((response) => {
         if (response?.status === 200) {
           console.log(response);
-          alert("Post Deleted!");
+          alert('Post Deleted!');
           fetchData(localStorage.getItem('token'));
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
       });
-  }
-
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Post Title', width: 260 },
-    { field: 'description', headerName: 'Post Description', width: 350 },
-    {
-      field: 'update action',
-      headerName: 'Update Action',
-      type: 'number',
-      width: 180,
-      renderCell: (cellValues) => {
-        const classes = style();
-        return (
-          <Button
-            variant="contained"
-            startIcon={<UpdIcon />}
-            className={classes.rowButton}
-            onClick={() => { }}
-          >
-            <b>Post Update</b>
-          </Button>
-        );
-      },
-    },
-    {
-      field: 'delete action',
-      headerName: 'Delete Action',
-      type: 'number',
-      width: 160,
-      renderCell: (cellValues) => {
-        const classes = style();
-        return (
-          <Button
-            variant="contained"
-            startIcon={<DelIcon />}
-            className={classes.rowButton}
-            onClick={() => {
-              postDelete(cellValues.row.id);
-            }}
-          >
-            <b>Delete</b>
-          </Button>
-        );
-      },
-    }
-  ];
+  };
 
   const signout = () => {
-    console.log(localStorage.getItem('token'));
     localStorage.removeItem('token');
-  }
+    history.push('/AdminLogin');
+  };
 
   const list = (anchor) => (
     <Box
@@ -267,8 +276,8 @@ export default function AdminDashboard() {
       <h1 align="center">Admin Dashboard</h1>
       <div
         style={{
-          height: 400,
-          width: '90%',
+          height: 380,
+          width: '88%',
           paddingTop: 90,
           paddingLeft: 70,
           paddingRight: 90,
