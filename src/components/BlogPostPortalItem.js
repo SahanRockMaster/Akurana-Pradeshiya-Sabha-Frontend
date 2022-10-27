@@ -1,6 +1,6 @@
 import React from "react";
 
-function BlogPostPortalItem({ image, name, price }) {
+function BlogPostPortalItem({ image, name }) {
   return (
     <div className="postsItem">
       <div style={{ backgroundImage: `url(${image})` }}> </div>
