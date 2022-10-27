@@ -16,7 +16,7 @@ function Events() {
 
   const fetchData = async (token) => {
     await axios
-      .get("http://local.backend-dev.com/api/posts", {
+      .get("http://local.backend-dev/api/posts", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
