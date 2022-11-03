@@ -198,7 +198,15 @@ var data = new FormData();
             <input hidden accept="image/*" multiple type="file" />
           </Button>
         </Stack>
-
+        <TextField
+          autoFocus
+          margin="dense"
+          id="title"
+          label="Title of the blog post"
+          fullWidth
+          variant="outlined"
+          color="warning"
+        />
         <ImageList sx={{ width: { selectWidth }, height: { selectHeight } }}>
           <ImageListItem key="Subheader" cols={2} rows={3}>
             <ListSubheader component="div" spacing={0}>
