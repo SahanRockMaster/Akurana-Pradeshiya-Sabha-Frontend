@@ -22,9 +22,9 @@ import DashboardIcon from '@mui/icons-material/Speed';
 import MailIcon from '@mui/icons-material/Mail';
 import SandwichIcon from '@mui/icons-material/MenuRounded';
 import Popup from './uploadPopup';
+import UpdatePopup from './updatePopup';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { FeedTwoTone } from '@mui/icons-material';
 
 const style = makeStyles({
   titleItemRight: {
@@ -71,6 +71,9 @@ const style = makeStyles({
 
 export default function AdminDashboard() {
 
+  const [openUpdPopup, setOpenUpdPopup] = React.useState(false);
+
+
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'Post Title', width: 260 },
@@ -87,7 +90,9 @@ export default function AdminDashboard() {
             variant="contained"
             startIcon={<UpdIcon />}
             className={classes.rowButton}
-            onClick={() => {}}
+            onClick={() => {
+              setOpenUpdPopup(true);
+            }}
           >
             <b>Post Update</b>
           </Button>
@@ -252,6 +257,10 @@ export default function AdminDashboard() {
       </Button>
 
       <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}></Popup>
+      <UpdatePopup
+        openUpdPopup={openUpdPopup}
+        setOpenUpdPopup={setOpenUpdPopup}
+      ></UpdatePopup>
 
       {['left'].map((anchor) => (
         <React.Fragment key={anchor}>
@@ -288,7 +297,6 @@ export default function AdminDashboard() {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          checkboxSelection
         />
       </div>
     </div>
