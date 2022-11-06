@@ -93,6 +93,7 @@ export default function AdminDashboard() {
             startIcon={<UpdIcon />}
             className={classes.rowButton}
             onClick={() => {
+              setPost(cellValues.row);
               setOpenUpdPopup(true);
             }}
           >
@@ -129,6 +130,7 @@ export default function AdminDashboard() {
   const history = useHistory();
   const [username, setUsername] = React.useState();
   const [rows, setRows] = React.useState([]);
+  const [post, setPost] = React.useState();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -265,10 +267,13 @@ export default function AdminDashboard() {
         Blog Post Upload
       </Button>
 
-      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup} toastPOP={toastPOP}></Popup>
+      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup} toastPOP={toastPOP} fetchData={fetchData}></Popup>
       <UpdatePopup
         openUpdPopup={openUpdPopup}
         setOpenUpdPopup={setOpenUpdPopup}
+        post={post}
+        toastPOP={toastPOP}
+        fetchData={fetchData}
       ></UpdatePopup>
 
       {['left'].map((anchor) => (

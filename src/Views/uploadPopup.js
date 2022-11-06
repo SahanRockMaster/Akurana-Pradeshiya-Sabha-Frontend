@@ -127,6 +127,7 @@ export default function Popup(props) {
         if (response.status === 200) {
           clearFields();
           setOpenPopup(false);
+          props.fetchData(localStorage.getItem('token'));
           props.toastPOP(1,'Blog Post successfully Added!');
         }
       })
