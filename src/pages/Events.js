@@ -16,11 +16,9 @@ function Events() {
 
   const fetchData = async (token) => {
     await axios
-      .get("http://local.backend-dev/api/posts", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get("http://local.backend-dev/api/getAllPosts")
       .then((response) => {
-        console.log();
+        console.log(response);
         setPost(response.data.data);
       })
       .catch((error) => {

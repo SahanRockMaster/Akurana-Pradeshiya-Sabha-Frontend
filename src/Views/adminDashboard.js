@@ -25,6 +25,8 @@ import Popup from './uploadPopup';
 import UpdatePopup from './updatePopup';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const style = makeStyles({
   titleItemRight: {
@@ -140,6 +142,14 @@ export default function AdminDashboard() {
     setState({ ...state, [anchor]: open });
   };
 
+  const toastPOP = (status, text) => {
+    if (status === 1) {
+      toast.success(text);
+    } else {
+      toast.warning(text);
+    }
+  }
+
   useEffect(() => {
     let token = localStorage.getItem('token');
     setUsername(localStorage.getItem('user'));
@@ -156,12 +166,11 @@ export default function AdminDashboard() {
       })
       .then((response) => {
         if (response?.status === 200) {
-          console.log(response.data.data);
           setRows(response.data.data);
         }
       })
       .catch((error) => {
-        console.log(error.response);
+        toast.warning(error.message);
       });
   }
 
@@ -172,13 +181,12 @@ export default function AdminDashboard() {
       })
       .then((response) => {
         if (response?.status === 200) {
-          console.log(response);
-          alert('Post Deleted!');
+          toast.success('Post Deleted!');
           fetchData(localStorage.getItem('token'));
         }
       })
       .catch((error) => {
-        console.log(error);
+        toast.warning(error.message);
       });
   };
 
@@ -244,6 +252,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
+      <ToastContainer />
       <Button
         sx={{ fontWeight: 'bold' }}
         variant="contained"
@@ -256,7 +265,7 @@ export default function AdminDashboard() {
         Blog Post Upload
       </Button>
 
-      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}></Popup>
+      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup} toastPOP={toastPOP}></Popup>
       <UpdatePopup
         openUpdPopup={openUpdPopup}
         setOpenUpdPopup={setOpenUpdPopup}
@@ -285,7 +294,7 @@ export default function AdminDashboard() {
       <h1 align="center">Admin Dashboard</h1>
       <div
         style={{
-          height: 380,
+          height: 600,
           width: '88%',
           paddingTop: 90,
           paddingLeft: 70,
@@ -295,8 +304,8 @@ export default function AdminDashboard() {
         <DataGrid
           rows={rows}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={10}
+          rowsPerPageOptions={[10]}
         />
       </div>
     </div>

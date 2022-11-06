@@ -21,10 +21,6 @@ import ImageUpload from '@mui/icons-material/AddToPhotos';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 import axios from "axios";
-import fs from 'fs';
-
-
-
 
 const style = makeStyles({
   titleItemRight: {
@@ -58,11 +54,15 @@ export default function Popup(props) {
   const [selectWidth, setSelectWidth] = useState(10);
   const [selectHeight, setSelectHeight] = useState(10);
 
-  
+  const [ximages, setImages] = useState();
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
 
   const onSelectFile = (event) => {
     const selectedFile = event.target.files;
     const selectedFilesArray = Array.from(selectedFile);
+
+    setImages(event.target.files[0]);
 
     if (selectedFilesArray.length < 6) {
       const imagesArray = selectedFilesArray.map((file) => {
@@ -96,8 +96,10 @@ export default function Popup(props) {
       }
     }
   };
+
   const handleClose = () => {
     setOpenPopup(false);
+    clearFields();
   };
 
   function deleteHandler(image) {
@@ -107,62 +109,39 @@ export default function Popup(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log(imageFiles);
-    // const formData = new FormData();
-    // formData.append('files[]', imageFiles);
-    // formData.append('name', 'Test App 23');
-    // formData.append('description', 'About test app 23');
-    // try {
-    //   const response = await axios({
-    //     method: 'post',
-    //     url: 'http://localhost:8000/api/posts',
-    //     data: formData,
-    //     headers: {
-    //       Authorization:
-    //         'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjUzNTlhYTQ0YmY5MGQyYWViZTcxNTlhNTJiOTA0ZDk5MTcyYjcwYmJmNzY2N2JmMmVhOTVjYjdmYjg0ZjlmZWYwNjg3M2JhMmUxNzUzY2QiLCJpYXQiOjE2NjU2Mzg1NjAuOTU2NDE0LCJuYmYiOjE2NjU2Mzg1NjAuOTU2NDE5LCJleHAiOjE2OTcxNzQ1NjAuODUyNTIsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.ff8Ck7MJNCOmiaq8-n8Ui9pzEubemKFIs-NElp3pTuaYziYEQTYkC0L-4u6rq7IqJiPhPiLFEe-U6Iwyc93CzUfbVX1yfPZeNSLvlG5GpXvHuEW_j-ofel2LsXgO3L9npfoj351hqWHxDXbPDTQcM4BQ2hSbmdsY6on86wqSCMleMDWmoYR8k5A4WMZeO4C8K2RZBdzrC5Cyr4JGf7GmCjC8iEnuiCt1LXeAeIgOj_uVuZyjHy_UH18WIUPqxpWNoM-AOU_4DPqdW5sUve9ItUDXXgc5MCbkhK-9Cyg3vstjDAQfkXgAjifL1iTUsjJAg1pw3E0NvHYa4SrnEK9ktctF1_vnR5-REolzsuMldUR34I0g7aJnZ2RSWWX4i5T1DbFN4jnG4DoR2NeXGx56n7hr1RD-HLfE6jEh_xLs4hFq9Jctm1jqgU4HqFgJ5XDJ-4SYp13lHtdwXFD6Xpsxz-v6ZBJKJALFo5jvJBykGBkOgFgvKs_32cBNmc5NqOOZywwc7eI2zF6mycV-YJuWopj_El0K89HyKMLJ0jTy-_d_HagNfMTFnNkyPrTzyhjO882vmoZ-gIYWrdmzsd_XOJ9mnuRUMoGiQlvaUJbCjM7NPfPPzFHdMFoJQswexXjV-ZteV_QnsJN8zzswSKfrdtlWWj1C96A0X6f-u91yHg4',
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //   });
-    //   console.log(response);
-    // } catch (error) {
-    //   console.log(error);
-    // }
 
+    let token = localStorage.getItem('token');
 
+    let data = new FormData();
+    data.append('files[]', ximages);
+    data.append('name', title);
+    data.append('description', description);
 
-   // var fs = require('fs');
-    //var axios = require('axios');
-var FormData = require('form-data');
-
-var data = new FormData();
-    // data.append(
-    //   'files[]', imageFiles
-    // );
-    data.append(
-      'files[]', fs.createReadStream('/C:/Users/UABEYPI/Downloads/leaves-eye-peeking-2-640-300x300.jpg')
-    );
-    data.append('name', 'test application new');
-    data.append('description', 'test application new description');
-
-    var config = {
-      method: 'post',
-      url: 'http://localhost:8000/api/posts',
-      headers: {
-        Authorization:
-          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjUzNTlhYTQ0YmY5MGQyYWViZTcxNTlhNTJiOTA0ZDk5MTcyYjcwYmJmNzY2N2JmMmVhOTVjYjdmYjg0ZjlmZWYwNjg3M2JhMmUxNzUzY2QiLCJpYXQiOjE2NjU2Mzg1NjAuOTU2NDE0LCJuYmYiOjE2NjU2Mzg1NjAuOTU2NDE5LCJleHAiOjE2OTcxNzQ1NjAuODUyNTIsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.ff8Ck7MJNCOmiaq8-n8Ui9pzEubemKFIs-NElp3pTuaYziYEQTYkC0L-4u6rq7IqJiPhPiLFEe-U6Iwyc93CzUfbVX1yfPZeNSLvlG5GpXvHuEW_j-ofel2LsXgO3L9npfoj351hqWHxDXbPDTQcM4BQ2hSbmdsY6on86wqSCMleMDWmoYR8k5A4WMZeO4C8K2RZBdzrC5Cyr4JGf7GmCjC8iEnuiCt1LXeAeIgOj_uVuZyjHy_UH18WIUPqxpWNoM-AOU_4DPqdW5sUve9ItUDXXgc5MCbkhK-9Cyg3vstjDAQfkXgAjifL1iTUsjJAg1pw3E0NvHYa4SrnEK9ktctF1_vnR5-REolzsuMldUR34I0g7aJnZ2RSWWX4i5T1DbFN4jnG4DoR2NeXGx56n7hr1RD-HLfE6jEh_xLs4hFq9Jctm1jqgU4HqFgJ5XDJ-4SYp13lHtdwXFD6Xpsxz-v6ZBJKJALFo5jvJBykGBkOgFgvKs_32cBNmc5NqOOZywwc7eI2zF6mycV-YJuWopj_El0K89HyKMLJ0jTy-_d_HagNfMTFnNkyPrTzyhjO882vmoZ-gIYWrdmzsd_XOJ9mnuRUMoGiQlvaUJbCjM7NPfPPzFHdMFoJQswexXjV-ZteV_QnsJN8zzswSKfrdtlWWj1C96A0X6f-u91yHg4',
-          'Content-Type': 'multipart/form-data'
-      },
-      data: data,
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
     };
 
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
+    await axios
+      .post(`http://local.backend-dev/api/posts`, data, config)
+      .then((response) => {
+        if (response.status === 200) {
+          clearFields();
+          setOpenPopup(false);
+          props.toastPOP(1,'Blog Post successfully Added!');
+        }
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((error) => {
+        props.toastPOP(2,error.message);
       });
   };
+
+  const clearFields = () => {
+    setImages(null);
+    setSelectedImages([]);
+    setImageFiles([]);
+    setTitle(null);
+    setDescription(null);
+  }
 
   const classes = style();
 
@@ -206,6 +185,7 @@ var data = new FormData();
           fullWidth
           variant="outlined"
           color="warning"
+          onChange={(e) => { setTitle(e.target.value) }}
         />
         <ImageList sx={{ width: { selectWidth }, height: { selectHeight } }}>
           <ImageListItem key="Subheader" cols={2} rows={3}>
@@ -252,6 +232,7 @@ var data = new FormData();
           color="warning"
           multiline
           rows={4}
+          onChange={(e) => (setDescription(e.target.value))}
         />
       </DialogContent>
       <DialogActions>
