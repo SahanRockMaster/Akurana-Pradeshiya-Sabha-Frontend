@@ -8,6 +8,8 @@ import AdminDashboard from "./Views/adminDashboard";
 import AdminFormView from "./pages/AdminFormView";
 import Events from "./pages/Events";
 import BlogPostPortal from "./pages/BlogPostPortal";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 // function App() {
 //   return (
@@ -35,14 +37,17 @@ import BlogPostPortal from "./pages/BlogPostPortal";
 const Main = withRouter(({ location }) => {
   return (
     <div className="App">
-      {location.pathname !== '/adminDashboard' && <Navbar />}
+      {location.pathname !== '/adminDashboard' && 
+      location.pathname !== '/AdminFormView' && <Navbar />}
       <Route path="/" exact component={Home} />
       <Route path="/AdminLogin" exact component={AdminLogin} />
       <Route path="/adminDashboard" exact component={AdminDashboard} />
+      <Route path="/contact" exact component={Contact} />
+      <Route path="/about" exact component={About} />
       <Route path="/AdminFormView" exact component={AdminFormView} />
       <Route path="/events" exact component={Events} />
       <Route path="/BlogPostPortal" exact component={BlogPostPortal} /> 
-      {location.pathname !== '/adminDashboard' && <Footer />}
+      {location.pathname !== '/adminDashboard' && location.pathname !== '/BlogPostPortal' &&  location.pathname !== '/AdminFormView' && <Footer />}
     </div>
   );
 });
