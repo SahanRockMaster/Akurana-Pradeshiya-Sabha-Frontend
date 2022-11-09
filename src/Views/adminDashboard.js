@@ -22,9 +22,11 @@ import DashboardIcon from '@mui/icons-material/Speed';
 import MailIcon from '@mui/icons-material/Mail';
 import SandwichIcon from '@mui/icons-material/MenuRounded';
 import Popup from './uploadPopup';
+import UpdatePopup from './updatePopup';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { FeedTwoTone } from '@mui/icons-material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const style = makeStyles({
   titleItemRight: {
@@ -71,6 +73,9 @@ const style = makeStyles({
 
 export default function AdminDashboard() {
 
+  const [openUpdPopup, setOpenUpdPopup] = React.useState(false);
+
+
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'Post Title', width: 260 },
@@ -87,7 +92,10 @@ export default function AdminDashboard() {
             variant="contained"
             startIcon={<UpdIcon />}
             className={classes.rowButton}
-            onClick={() => {}}
+            onClick={() => {
+              setPost(cellValues.row);
+              setOpenUpdPopup(true);
+            }}
           >
             <b>Post Update</b>
           </Button>
@@ -122,6 +130,7 @@ export default function AdminDashboard() {
   const history = useHistory();
   const [username, setUsername] = React.useState();
   const [rows, setRows] = React.useState([]);
+  const [post, setPost] = React.useState();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -135,6 +144,14 @@ export default function AdminDashboard() {
     setState({ ...state, [anchor]: open });
   };
 
+  const toastPOP = (status, text) => {
+    if (status === 1) {
+      toast.success(text);
+    } else {
+      toast.warning(text);
+    }
+  }
+
   useEffect(() => {
     let token = localStorage.getItem('token');
     setUsername(localStorage.getItem('user'));
@@ -146,40 +163,38 @@ export default function AdminDashboard() {
 
   async function fetchData(token) {
     await axios
-      .get('http://127.0.0.1:8000/api/posts', {
+      .get('http://local.backend-dev/api/posts', {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
         if (response?.status === 200) {
-          console.log(response.data.data);
           setRows(response.data.data);
         }
       })
       .catch((error) => {
-        console.log(error.response);
+        toast.warning(error.message);
       });
   }
 
   const postDelete = async (id) => {
     await axios
-      .delete(`http://127.0.0.1:8000/api/posts/${id}`, {
+      .delete(`http://local.backend-dev/api/posts/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       })
       .then((response) => {
         if (response?.status === 200) {
-          console.log(response);
-          alert('Post Deleted!');
+          toast.success('Post Deleted!');
           fetchData(localStorage.getItem('token'));
         }
       })
       .catch((error) => {
-        console.log(error);
+        toast.warning(error.message);
       });
   };
 
   const signout = () => {
-    console.log(localStorage.getItem('token'));
     localStorage.removeItem('token');
+    history.push('/AdminLogin');
   };
 
   const list = (anchor) => (
@@ -239,6 +254,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
+      <ToastContainer />
       <Button
         sx={{ fontWeight: 'bold' }}
         variant="contained"
@@ -251,7 +267,14 @@ export default function AdminDashboard() {
         Blog Post Upload
       </Button>
 
-      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}></Popup>
+      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup} toastPOP={toastPOP} fetchData={fetchData}></Popup>
+      <UpdatePopup
+        openUpdPopup={openUpdPopup}
+        setOpenUpdPopup={setOpenUpdPopup}
+        post={post}
+        toastPOP={toastPOP}
+        fetchData={fetchData}
+      ></UpdatePopup>
 
       {['left'].map((anchor) => (
         <React.Fragment key={anchor}>
@@ -276,7 +299,7 @@ export default function AdminDashboard() {
       <h1 align="center">Admin Dashboard</h1>
       <div
         style={{
-          height: 380,
+          height: 600,
           width: '88%',
           paddingTop: 90,
           paddingLeft: 70,
@@ -286,9 +309,8 @@ export default function AdminDashboard() {
         <DataGrid
           rows={rows}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
+          pageSize={10}
+          rowsPerPageOptions={[10]}
         />
       </div>
     </div>

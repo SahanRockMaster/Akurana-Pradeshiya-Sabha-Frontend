@@ -19,6 +19,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.1",
     "react-table": "^7.8.0",
+    "react-toastify": "^9.1.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -39,8 +40,6 @@
       "not dead",
       "not op_mini all"
     ],
- 
-
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -49,5 +48,5 @@
   },
   "browser": {
     "fs": false
- }
+  }
 }

@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import AdminLogin from "./pages/AdminLogin";
 import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router-dom";
 import AdminDashboard from "./Views/adminDashboard";
+import ApplicationView from './Views/applicationView';
 import AdminFormView from "./pages/AdminFormView";
 import Events from "./pages/Events";
 import BlogPostPortal from "./pages/BlogPostPortal";
@@ -46,6 +47,7 @@ const Main = withRouter(({ location }) => {
       <Route path="/about" exact component={About} />
       <Route path="/AdminFormView" exact component={AdminFormView} />
       <Route path="/events" exact component={Events} />
+      <Route path="/forms" exact component={ApplicationView} />
       <Route path="/BlogPostPortal" exact component={BlogPostPortal} /> 
       {location.pathname !== '/adminDashboard' && location.pathname !== '/BlogPostPortal' &&  location.pathname !== '/AdminFormView' && <Footer />}
     </div>
