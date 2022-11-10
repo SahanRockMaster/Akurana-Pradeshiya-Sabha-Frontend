@@ -14,7 +14,7 @@ function BlogPostPortal() {
   },[]);
 
   const getData = async(token) => {
-    await axios.get('http://local.backend-dev/api/posts', {
+    await axios.get('http://localhost:8000/api/posts', {
       headers: { Authorization: `Bearer ${token}` },
     }).then((response) => {
       console.log(response.data.data)
