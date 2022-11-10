@@ -9,6 +9,8 @@ import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
 import DownloadIcon from '@mui/icons-material/Download';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 
 const style = makeStyles({
   titleItemCenter: {
@@ -26,44 +28,75 @@ const style = makeStyles({
 
 export default function RecipeReviewCard() {
   const classes = style();
+  const token = localStorage.getItem('token');
+  const [data, setData] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    await axios
+      .get('http://local.backend-dev/api/getAllApplications')
+      .then((response) => {
+        if (response?.status === 200) {
+          setData(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        toast.warning(error.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
 
   return (
     <div>
+      <ToastContainer />
       <Stack direction="row" spacing={2}>
-        <Card
-          sx={{ maxWidth: 345, marginBottom: 8, marginLeft: 5, marginTop: 5 }}
-          boxShadow={10}
-        >
-          <CardHeader
-            title="Application Form 1"
-            subheader="September 14, 2016"
-          />
-          <CardMedia
-            component="img"
-            height="194"
-            image="https://thumbs.dreamstime.com/b/beautiful-rain-forest-ang-ka-nature-trail-doi-inthanon-national-park-thailand-36703721.jpg"
-            alt="Paella dish"
-          />
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              This impressive paella is a perfect party dish and a fun meal to
-              cook together with your guests. Add 1 cup of frozen peas along
-              with the mussels, if you like.
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <Button
-              variant="contained"
-              startIcon={<DownloadIcon />}
-              className={classes.titleItemCenter}
-              onClick={() => {
-                //setOpenUpdPopup(true);
-              }}
+        {data.map((app) => {
+          return (
+            <Card
+              sx={{ maxWidth: 345, marginBottom: 8, marginLeft: 5, marginTop: 5 }}
+              boxShadow={10}
             >
-              <b>Download</b>
-            </Button>
-          </CardActions>
-        </Card>
+              <CardHeader
+                title={app.name}
+                subheader="September 14, 2016"
+              />
+              <CardMedia
+                component="img"
+                height="194"
+                image="https://thumbs.dreamstime.com/b/beautiful-rain-forest-ang-ka-nature-trail-doi-inthanon-national-park-thailand-36703721.jpg"
+                alt="Paella dish"
+              />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  {app.description}
+                </Typography>
+              </CardContent>
+              <CardActions disableSpacing>
+                {app.application_attachments.length !== 0 &&
+                  <Button
+                    variant="contained"
+                    startIcon={<DownloadIcon />}
+                    className={classes.titleItemCenter}
+                    onClick={() => {
+                      //setOpenUpdPopup(true);
+                    }}
+
+                  >
+                    <b>Download</b>
+                  </Button>}
+
+              </CardActions>
+            </Card>
+          )
+        })}
+
       </Stack>
     </div>
   );
