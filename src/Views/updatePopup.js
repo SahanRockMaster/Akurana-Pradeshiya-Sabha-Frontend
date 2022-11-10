@@ -67,18 +67,7 @@ export default function Popup(props) {
       </Box>
 
       <DialogContent dividers>
-        <Stack direction="row" alignItems="center" spacing={0}>
-          {/* <Button
-            variant="contained"
-            component="label"
-            className={classes.uploadBtn}
-            startIcon={<ImageUpload />}
-            onChange={onSelectFile}
-          >
-            Upload Images
-            <input hidden accept="image/*" multiple type="file" />
-          </Button> */}
-        </Stack>
+        <Stack direction="row" alignItems="center" spacing={0}></Stack>
         <TextField
           autoFocus
           margin="dense"
@@ -146,16 +135,7 @@ export default function Popup(props) {
           rows={4}
         />
       </DialogContent>
-      <DialogActions>
-        {/* <Button
-          className={classes.titleItemRight}
-          //onClick={openPopup}
-         // onClick={handleSubmit}
-          variant="contained"
-        >
-          <b>Upload</b>
-        </Button> */}
-      </DialogActions>
+      <DialogActions></DialogActions>
       <Button
         className={classes.titleItemRight}
         onClick={handleClose}

@@ -20,11 +20,6 @@ import DeleteButton from '@material-ui/icons/Delete';
 import ImageUpload from '@mui/icons-material/AddToPhotos';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
-import axios from "axios";
-import fs from 'fs';
-
-
-
 
 const style = makeStyles({
   titleItemRight: {
@@ -57,18 +52,50 @@ export default function Popup(props) {
   const { openPopup, setOpenPopup } = props;
   const [selectWidth, setSelectWidth] = useState(10);
   const [selectHeight, setSelectHeight] = useState(10);
-
-  
+  const [selectImage1, setselectImage1] = useState(null);
+  const [selectImage2, setselectImage2] = useState(null);
+  const [selectImage3, setselectImage3] = useState(null);
+  const [selectImage4, setselectImage4] = useState(null);
+  const [selectImage5, setselectImage5] = useState(null);
+  const [selectImage6, setselectImage6] = useState(null);
 
   const onSelectFile = (event) => {
     const selectedFile = event.target.files;
     const selectedFilesArray = Array.from(selectedFile);
-
-    if (selectedFilesArray.length < 6) {
+    if (selectedFilesArray.length <= 6) {
       const imagesArray = selectedFilesArray.map((file) => {
         return URL.createObjectURL(file);
       });
-      //console.log(imagesArray);
+
+      if (imagesArray.length === 1) {
+        setselectImage1(imagesArray[0]);
+      } else if (imagesArray.length === 2) {
+        setselectImage1(imagesArray[0]);
+        setselectImage2(imagesArray[1]);
+      } else if (imagesArray.length === 3) {
+        setselectImage1(imagesArray[0]);
+        setselectImage2(imagesArray[1]);
+        setselectImage3(imagesArray[2]);
+      } else if (imagesArray.length === 4) {
+        setselectImage1(imagesArray[0]);
+        setselectImage2(imagesArray[1]);
+        setselectImage3(imagesArray[2]);
+        setselectImage4(imagesArray[3]);
+      } else if (imagesArray.length === 5) {
+        setselectImage1(imagesArray[0]);
+        setselectImage2(imagesArray[1]);
+        setselectImage3(imagesArray[2]);
+        setselectImage4(imagesArray[3]);
+        setselectImage5(imagesArray[4]);
+      } else {
+        setselectImage1(imagesArray[0]);
+        setselectImage2(imagesArray[1]);
+        setselectImage3(imagesArray[2]);
+        setselectImage4(imagesArray[3]);
+        setselectImage5(imagesArray[4]);
+        setselectImage6(imagesArray[5]);
+      }
+
       setSelectedImages(imagesArray);
       setImageFiles(imagesArray);
 
@@ -78,12 +105,22 @@ export default function Popup(props) {
       } else if (imagesArray.length > 3) {
         setSelectWidth(610);
         setSelectHeight(610);
+        console.log(imagesArray);
       }
+      console.log(imagesArray.length);
     } else {
       const images = selectedFilesArray.slice(0, 6);
       const imagesArray = images.map((file) => {
         return URL.createObjectURL(file);
       });
+
+      setselectImage1(imagesArray[0]);
+      setselectImage2(imagesArray[1]);
+      setselectImage3(imagesArray[2]);
+      setselectImage4(imagesArray[3]);
+      setselectImage5(imagesArray[4]);
+      setselectImage6(imagesArray[5]);
+
       setSelectedImages(imagesArray);
       setImageFiles(imagesArray);
 
@@ -103,65 +140,40 @@ export default function Popup(props) {
   function deleteHandler(image) {
     setSelectedImages(selectedImages.filter((e) => e !== image));
     URL.revokeObjectURL(image);
+    if (selectedImages.length === 1) {
+      setselectImage1(selectedImages[0]);
+    } else if (selectedImages.length === 2) {
+      setselectImage1(selectedImages[0]);
+      setselectImage2(selectedImages[1]);
+    } else if (selectedImages.length === 3) {
+      setselectImage1(selectedImages[0]);
+      setselectImage2(selectedImages[1]);
+      setselectImage3(selectedImages[2]);
+    } else if (selectedImages.length === 4) {
+      setselectImage1(selectedImages[0]);
+      setselectImage2(selectedImages[1]);
+      setselectImage3(selectedImages[2]);
+      setselectImage4(selectedImages[3]);
+    } else if (selectedImages.length === 5) {
+      setselectImage1(selectedImages[0]);
+      setselectImage2(selectedImages[1]);
+      setselectImage3(selectedImages[2]);
+      setselectImage4(selectedImages[3]);
+      setselectImage5(selectedImages[4]);
+    } else {
+      setselectImage1(selectedImages[0]);
+      setselectImage2(selectedImages[1]);
+      setselectImage3(selectedImages[2]);
+      setselectImage4(selectedImages[3]);
+      setselectImage5(selectedImages[4]);
+      setselectImage6(selectedImages[5]);
+    }
   }
 
   const handleSubmit = async (event) => {
+    
+    console.log(selectImage5);
     event.preventDefault();
-    // console.log(imageFiles);
-    // const formData = new FormData();
-    // formData.append('files[]', imageFiles);
-    // formData.append('name', 'Test App 23');
-    // formData.append('description', 'About test app 23');
-    // try {
-    //   const response = await axios({
-    //     method: 'post',
-    //     url: 'http://localhost:8000/api/posts',
-    //     data: formData,
-    //     headers: {
-    //       Authorization:
-    //         'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjUzNTlhYTQ0YmY5MGQyYWViZTcxNTlhNTJiOTA0ZDk5MTcyYjcwYmJmNzY2N2JmMmVhOTVjYjdmYjg0ZjlmZWYwNjg3M2JhMmUxNzUzY2QiLCJpYXQiOjE2NjU2Mzg1NjAuOTU2NDE0LCJuYmYiOjE2NjU2Mzg1NjAuOTU2NDE5LCJleHAiOjE2OTcxNzQ1NjAuODUyNTIsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.ff8Ck7MJNCOmiaq8-n8Ui9pzEubemKFIs-NElp3pTuaYziYEQTYkC0L-4u6rq7IqJiPhPiLFEe-U6Iwyc93CzUfbVX1yfPZeNSLvlG5GpXvHuEW_j-ofel2LsXgO3L9npfoj351hqWHxDXbPDTQcM4BQ2hSbmdsY6on86wqSCMleMDWmoYR8k5A4WMZeO4C8K2RZBdzrC5Cyr4JGf7GmCjC8iEnuiCt1LXeAeIgOj_uVuZyjHy_UH18WIUPqxpWNoM-AOU_4DPqdW5sUve9ItUDXXgc5MCbkhK-9Cyg3vstjDAQfkXgAjifL1iTUsjJAg1pw3E0NvHYa4SrnEK9ktctF1_vnR5-REolzsuMldUR34I0g7aJnZ2RSWWX4i5T1DbFN4jnG4DoR2NeXGx56n7hr1RD-HLfE6jEh_xLs4hFq9Jctm1jqgU4HqFgJ5XDJ-4SYp13lHtdwXFD6Xpsxz-v6ZBJKJALFo5jvJBykGBkOgFgvKs_32cBNmc5NqOOZywwc7eI2zF6mycV-YJuWopj_El0K89HyKMLJ0jTy-_d_HagNfMTFnNkyPrTzyhjO882vmoZ-gIYWrdmzsd_XOJ9mnuRUMoGiQlvaUJbCjM7NPfPPzFHdMFoJQswexXjV-ZteV_QnsJN8zzswSKfrdtlWWj1C96A0X6f-u91yHg4',
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //   });
-    //   console.log(response);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
-
-
-   // var fs = require('fs');
-    //var axios = require('axios');
-var FormData = require('form-data');
-
-var data = new FormData();
-    // data.append(
-    //   'files[]', imageFiles
-    // );
-    data.append(
-      'files[]', fs.createReadStream('/C:/Users/UABEYPI/Downloads/leaves-eye-peeking-2-640-300x300.jpg')
-    );
-    data.append('name', 'test application new');
-    data.append('description', 'test application new description');
-
-    var config = {
-      method: 'post',
-      url: 'http://localhost:8000/api/posts',
-      headers: {
-        Authorization:
-          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjUzNTlhYTQ0YmY5MGQyYWViZTcxNTlhNTJiOTA0ZDk5MTcyYjcwYmJmNzY2N2JmMmVhOTVjYjdmYjg0ZjlmZWYwNjg3M2JhMmUxNzUzY2QiLCJpYXQiOjE2NjU2Mzg1NjAuOTU2NDE0LCJuYmYiOjE2NjU2Mzg1NjAuOTU2NDE5LCJleHAiOjE2OTcxNzQ1NjAuODUyNTIsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.ff8Ck7MJNCOmiaq8-n8Ui9pzEubemKFIs-NElp3pTuaYziYEQTYkC0L-4u6rq7IqJiPhPiLFEe-U6Iwyc93CzUfbVX1yfPZeNSLvlG5GpXvHuEW_j-ofel2LsXgO3L9npfoj351hqWHxDXbPDTQcM4BQ2hSbmdsY6on86wqSCMleMDWmoYR8k5A4WMZeO4C8K2RZBdzrC5Cyr4JGf7GmCjC8iEnuiCt1LXeAeIgOj_uVuZyjHy_UH18WIUPqxpWNoM-AOU_4DPqdW5sUve9ItUDXXgc5MCbkhK-9Cyg3vstjDAQfkXgAjifL1iTUsjJAg1pw3E0NvHYa4SrnEK9ktctF1_vnR5-REolzsuMldUR34I0g7aJnZ2RSWWX4i5T1DbFN4jnG4DoR2NeXGx56n7hr1RD-HLfE6jEh_xLs4hFq9Jctm1jqgU4HqFgJ5XDJ-4SYp13lHtdwXFD6Xpsxz-v6ZBJKJALFo5jvJBykGBkOgFgvKs_32cBNmc5NqOOZywwc7eI2zF6mycV-YJuWopj_El0K89HyKMLJ0jTy-_d_HagNfMTFnNkyPrTzyhjO882vmoZ-gIYWrdmzsd_XOJ9mnuRUMoGiQlvaUJbCjM7NPfPPzFHdMFoJQswexXjV-ZteV_QnsJN8zzswSKfrdtlWWj1C96A0X6f-u91yHg4',
-          'Content-Type': 'multipart/form-data'
-      },
-      data: data,
-    };
-
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
   };
 
   const classes = style();
