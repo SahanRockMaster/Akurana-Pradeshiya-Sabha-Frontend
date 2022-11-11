@@ -20,6 +20,8 @@ import DeleteButton from '@material-ui/icons/Delete';
 import ImageUpload from '@mui/icons-material/AddToPhotos';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
+import axios from "axios";
+
 
 const style = makeStyles({
   titleItemRight: {
@@ -52,6 +54,7 @@ export default function Popup(props) {
   const { openPopup, setOpenPopup } = props;
   const [selectWidth, setSelectWidth] = useState(10);
   const [selectHeight, setSelectHeight] = useState(10);
+
   const [selectImage1, setselectImage1] = useState(null);
   const [selectImage2, setselectImage2] = useState(null);
   const [selectImage3, setselectImage3] = useState(null);
@@ -59,9 +62,17 @@ export default function Popup(props) {
   const [selectImage5, setselectImage5] = useState(null);
   const [selectImage6, setselectImage6] = useState(null);
 
+
+  const [ximages, setImages] = useState();
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
+
+
   const onSelectFile = (event) => {
     const selectedFile = event.target.files;
     const selectedFilesArray = Array.from(selectedFile);
+    setImages(event.target.files[0]);
+
     if (selectedFilesArray.length <= 6) {
       const imagesArray = selectedFilesArray.map((file) => {
         return URL.createObjectURL(file);
@@ -107,7 +118,6 @@ export default function Popup(props) {
         setSelectHeight(610);
         console.log(imagesArray);
       }
-      console.log(imagesArray.length);
     } else {
       const images = selectedFilesArray.slice(0, 6);
       const imagesArray = images.map((file) => {
@@ -133,8 +143,10 @@ export default function Popup(props) {
       }
     }
   };
+
   const handleClose = () => {
     setOpenPopup(false);
+    clearFields();
   };
 
   function deleteHandler(image) {
@@ -172,8 +184,42 @@ export default function Popup(props) {
 
   const handleSubmit = async (event) => {
     
+
     event.preventDefault();
+
+    let token = localStorage.getItem('token');
+
+    let data = new FormData();
+    data.append('files[]', ximages);
+    data.append('name', title);
+    data.append('description', description);
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    await axios
+      .post(`http://local.backend-dev/api/posts`, data, config)
+      .then((response) => {
+        if (response.status === 200) {
+          clearFields();
+          setOpenPopup(false);
+          props.fetchData(localStorage.getItem('token'));
+          props.toastPOP(1,'Blog Post successfully Added!');
+        }
+      })
+      .catch((error) => {
+        props.toastPOP(2,error.message);
+      });
   };
+
+  const clearFields = () => {
+    setImages(null);
+    setSelectedImages([]);
+    setImageFiles([]);
+    setTitle(null);
+    setDescription(null);
+  }
 
   const classes = style();
 
@@ -217,6 +263,7 @@ export default function Popup(props) {
           fullWidth
           variant="outlined"
           color="warning"
+          onChange={(e) => { setTitle(e.target.value) }}
         />
         <ImageList sx={{ width: { selectWidth }, height: { selectHeight } }}>
           <ImageListItem key="Subheader" cols={2} rows={3}>
@@ -263,6 +310,7 @@ export default function Popup(props) {
           color="warning"
           multiline
           rows={4}
+          onChange={(e) => (setDescription(e.target.value))}
         />
       </DialogContent>
       <DialogActions>

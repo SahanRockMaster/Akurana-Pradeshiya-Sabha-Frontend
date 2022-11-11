@@ -11,8 +11,8 @@ import {
 } from '@mui/material';
 import ActionButton from '../Controls/ActionButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const style = makeStyles({
@@ -46,7 +46,7 @@ export default function Popup(props) {
   const [postTitle, setPostTitle] = useState('');
   const [postDescription, setPostDescription] = useState('');
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async(e) => {
     e.preventDefault();
 
     const post = { description: postDescription };
@@ -65,13 +65,19 @@ export default function Popup(props) {
         }
       })
       .catch((error) => {
-        props.toastPOP(2, error.message);
+        props.toastPOP(2,error.message);
       });
 
     setOpenUpdPopup(false);
   };
 
   const classes = style();
+
+  useEffect(() => {
+    setPostId(props.post !== undefined? props.post.id: null);
+    setPostTitle(props.post !== undefined? props.post.name: null);
+    setPostDescription(props.post !== undefined? props.post.description: null);
+  });
 
   return (
     <Dialog open={openUpdPopup} maxWidth="md">
@@ -87,37 +93,36 @@ export default function Popup(props) {
         >
           <DialogTitle>Blog Post Update</DialogTitle>
         </Box>
-        <ActionButton
-          color="secondary"
-          onClick={() => {
-            setOpenUpdPopup(false);
-          }}
-        >
+        <ActionButton color="secondary" onClick={() => {setOpenUpdPopup(false);}}>
           <CloseIcon />
         </ActionButton>
       </Box>
 
       <DialogContent dividers>
-        <Stack direction="row" alignItems="center" spacing={0}></Stack>
+        <Stack direction="row" alignItems="center" spacing={0}>
+        </Stack>
         <TextField
           autoFocus
           margin="dense"
           id="id"
-          label="Id of the blog post"
+          placeholder="Id of the blog post"
           fullWidth
           variant="outlined"
           color="warning"
-          disabled="true"
+          disabled={true}
+          value={postId}
         />
+
         <TextField
           autoFocus
           margin="dense"
           id="title"
-          label="Title of the blog post"
+          placeholder="Title of the blog post"
           fullWidth
           variant="outlined"
           color="warning"
-          disabled="true"
+          disabled={true}
+          value={postTitle}
         />
         {/* <ImageList sx={{ width: { selectWidth }, height: { selectHeight } }}>
           <ImageListItem key="Subheader" cols={2} rows={3}>
@@ -158,12 +163,14 @@ export default function Popup(props) {
           autoFocus
           margin="dense"
           id="description"
-          label="Description of the blog post"
+          placeholder="Description of the blog post"
           fullWidth
           variant="outlined"
           color="warning"
           multiline
           rows={4}
+          defaultValue={postDescription}
+          onChange={(e) => {setPostDescription(e.target.value)}}
         />
       </DialogContent>
       <DialogActions></DialogActions>
