@@ -172,7 +172,6 @@ export default function Popup(props) {
 
   const handleSubmit = async (event) => {
     
-    console.log(selectImage5);
     event.preventDefault();
   };
 

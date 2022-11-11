@@ -11,7 +11,9 @@ import {
 } from '@mui/material';
 import ActionButton from '../Controls/ActionButton';
 import CloseIcon from '@material-ui/icons/Close';
+import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 const style = makeStyles({
   titleItemRight: {
@@ -40,8 +42,32 @@ const style = makeStyles({
 
 export default function Popup(props) {
   const { openUpdPopup, setOpenUpdPopup } = props;
+  const [postId, setPostId] = useState('');
+  const [postTitle, setPostTitle] = useState('');
+  const [postDescription, setPostDescription] = useState('');
 
-  const handleClose = () => {
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    const post = { description: postDescription };
+    let token = localStorage.getItem('token');
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    await axios
+      .put(`http://localhost:8000/api/posts/${postId}`, post, config)
+      .then((response) => {
+        if (response.status === 200) {
+          props.toastPOP(1, 'Blog Post Updated Successfully!');
+          props.fetchData(localStorage.getItem('token'));
+        }
+      })
+      .catch((error) => {
+        props.toastPOP(2, error.message);
+      });
+
     setOpenUpdPopup(false);
   };
 
@@ -61,7 +87,12 @@ export default function Popup(props) {
         >
           <DialogTitle>Blog Post Update</DialogTitle>
         </Box>
-        <ActionButton color="secondary" onClick={handleClose}>
+        <ActionButton
+          color="secondary"
+          onClick={() => {
+            setOpenUpdPopup(false);
+          }}
+        >
           <CloseIcon />
         </ActionButton>
       </Box>
@@ -138,7 +169,7 @@ export default function Popup(props) {
       <DialogActions></DialogActions>
       <Button
         className={classes.titleItemRight}
-        onClick={handleClose}
+        onClick={handleUpdate}
         variant="contained"
       >
         <b>Update</b>
