@@ -1,5 +1,4 @@
 import React, { useEffect,useState } from "react";
-import { EventsList } from "../helpers/EventsList";
 import EventsItem from "../components/EventsItem";
 import "../styles/Events.css";
 import axios from "axios";
@@ -16,7 +15,7 @@ function Events() {
 
   const fetchData = async (token) => {
     await axios
-      .get("http://127.0.0.1:8000/api/getAllPosts")
+      .get("http://local.backend-dev/api/getAllPosts")
       .then((response) => {
         console.log(response);
         setPost(response.data.data);
