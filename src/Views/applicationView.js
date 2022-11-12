@@ -38,7 +38,7 @@ export default function RecipeReviewCard() {
 
   async function fetchData() {
     await axios
-      .get('http://local.backend-dev/api/getAllApplications')
+      .get('http://127.0.0.1:8000/api/getAllApplications')
       .then((response) => {
         if (response?.status === 200) {
           setData(response.data.data);
