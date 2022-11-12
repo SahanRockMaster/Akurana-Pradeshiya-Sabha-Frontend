@@ -22,6 +22,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 import axios from "axios";
 
+
 const style = makeStyles({
   titleItemRight: {
     color: 'white',
@@ -54,21 +55,58 @@ export default function Popup(props) {
   const [selectWidth, setSelectWidth] = useState(10);
   const [selectHeight, setSelectHeight] = useState(10);
 
+  const [selectImage1, setselectImage1] = useState(null);
+  const [selectImage2, setselectImage2] = useState(null);
+  const [selectImage3, setselectImage3] = useState(null);
+  const [selectImage4, setselectImage4] = useState(null);
+  const [selectImage5, setselectImage5] = useState(null);
+  const [selectImage6, setselectImage6] = useState(null);
+
+
   const [ximages, setImages] = useState();
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
 
+
   const onSelectFile = (event) => {
     const selectedFile = event.target.files;
     const selectedFilesArray = Array.from(selectedFile);
-
     setImages(event.target.files[0]);
 
-    if (selectedFilesArray.length < 6) {
+    if (selectedFilesArray.length <= 6) {
       const imagesArray = selectedFilesArray.map((file) => {
         return URL.createObjectURL(file);
       });
-      //console.log(imagesArray);
+
+      if (imagesArray.length === 1) {
+        setselectImage1(imagesArray[0]);
+      } else if (imagesArray.length === 2) {
+        setselectImage1(imagesArray[0]);
+        setselectImage2(imagesArray[1]);
+      } else if (imagesArray.length === 3) {
+        setselectImage1(imagesArray[0]);
+        setselectImage2(imagesArray[1]);
+        setselectImage3(imagesArray[2]);
+      } else if (imagesArray.length === 4) {
+        setselectImage1(imagesArray[0]);
+        setselectImage2(imagesArray[1]);
+        setselectImage3(imagesArray[2]);
+        setselectImage4(imagesArray[3]);
+      } else if (imagesArray.length === 5) {
+        setselectImage1(imagesArray[0]);
+        setselectImage2(imagesArray[1]);
+        setselectImage3(imagesArray[2]);
+        setselectImage4(imagesArray[3]);
+        setselectImage5(imagesArray[4]);
+      } else {
+        setselectImage1(imagesArray[0]);
+        setselectImage2(imagesArray[1]);
+        setselectImage3(imagesArray[2]);
+        setselectImage4(imagesArray[3]);
+        setselectImage5(imagesArray[4]);
+        setselectImage6(imagesArray[5]);
+      }
+
       setSelectedImages(imagesArray);
       setImageFiles(imagesArray);
 
@@ -78,12 +116,21 @@ export default function Popup(props) {
       } else if (imagesArray.length > 3) {
         setSelectWidth(610);
         setSelectHeight(610);
+        console.log(imagesArray);
       }
     } else {
       const images = selectedFilesArray.slice(0, 6);
       const imagesArray = images.map((file) => {
         return URL.createObjectURL(file);
       });
+
+      setselectImage1(imagesArray[0]);
+      setselectImage2(imagesArray[1]);
+      setselectImage3(imagesArray[2]);
+      setselectImage4(imagesArray[3]);
+      setselectImage5(imagesArray[4]);
+      setselectImage6(imagesArray[5]);
+
       setSelectedImages(imagesArray);
       setImageFiles(imagesArray);
 
@@ -105,9 +152,39 @@ export default function Popup(props) {
   function deleteHandler(image) {
     setSelectedImages(selectedImages.filter((e) => e !== image));
     URL.revokeObjectURL(image);
+    if (selectedImages.length === 1) {
+      setselectImage1(selectedImages[0]);
+    } else if (selectedImages.length === 2) {
+      setselectImage1(selectedImages[0]);
+      setselectImage2(selectedImages[1]);
+    } else if (selectedImages.length === 3) {
+      setselectImage1(selectedImages[0]);
+      setselectImage2(selectedImages[1]);
+      setselectImage3(selectedImages[2]);
+    } else if (selectedImages.length === 4) {
+      setselectImage1(selectedImages[0]);
+      setselectImage2(selectedImages[1]);
+      setselectImage3(selectedImages[2]);
+      setselectImage4(selectedImages[3]);
+    } else if (selectedImages.length === 5) {
+      setselectImage1(selectedImages[0]);
+      setselectImage2(selectedImages[1]);
+      setselectImage3(selectedImages[2]);
+      setselectImage4(selectedImages[3]);
+      setselectImage5(selectedImages[4]);
+    } else {
+      setselectImage1(selectedImages[0]);
+      setselectImage2(selectedImages[1]);
+      setselectImage3(selectedImages[2]);
+      setselectImage4(selectedImages[3]);
+      setselectImage5(selectedImages[4]);
+      setselectImage6(selectedImages[5]);
+    }
   }
 
   const handleSubmit = async (event) => {
+    
+
     event.preventDefault();
 
     let token = localStorage.getItem('token');

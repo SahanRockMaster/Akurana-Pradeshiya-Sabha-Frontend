@@ -173,16 +173,7 @@ export default function Popup(props) {
           onChange={(e) => {setPostDescription(e.target.value)}}
         />
       </DialogContent>
-      <DialogActions>
-        {/* <Button
-          className={classes.titleItemRight}
-          //onClick={openPopup}
-         // onClick={handleSubmit}
-          variant="contained"
-        >
-          <b>Upload</b>
-        </Button> */}
-      </DialogActions>
+      <DialogActions></DialogActions>
       <Button
         className={classes.titleItemRight}
         onClick={handleUpdate}
