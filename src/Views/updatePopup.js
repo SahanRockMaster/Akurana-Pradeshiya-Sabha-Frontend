@@ -57,7 +57,7 @@ export default function Popup(props) {
     };
 
     await axios
-      .put(`http://127.0.0.1:8000/api/posts/${postId}`, post, config)
+      .put(`http://local.backend-dev/api/posts/${postId}`, post, config)
       .then((response) => {
         if (response.status === 200) {
           props.toastPOP(1,'Blog Post Updated Successfully!');

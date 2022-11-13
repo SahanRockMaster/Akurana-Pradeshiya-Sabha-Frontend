@@ -1,12 +1,14 @@
 import React, { useEffect,useState } from "react";
-import { EventsList } from "../helpers/EventsList";
 import EventsItem from "../components/EventsItem";
 import "../styles/Events.css";
 import axios from "axios";
 import Homes from "../assets/homes.jpg";
+import { useHistory } from 'react-router-dom';
 
 
 function Events() {
+  const history = useHistory();
+ 
   const [posts, setPost] = useState([]);
 
   useEffect(() => {
@@ -14,17 +16,17 @@ function Events() {
     fetchData(token);
   }, []);
 
-  const fetchData = async (token) => {
+  const fetchData = async () => {
     await axios
-      .get("http://127.0.0.1:8000/api/getAllPosts")
+      .get("http://local.backend-dev/api/getAllPosts")
       .then((response) => {
-        console.log(response);
         setPost(response.data.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   return (
     <div className="events">
       <h1 className="ebventsTitle">Events</h1>
@@ -35,7 +37,7 @@ function Events() {
               key={post.id}
               image={post.post_attachments.length === 0? Homes: post.post_attachments[0].attachment}
               name={post.name}
-            
+              event={() => {history.push(`/EventDetails/${post.id}`);}}
             />
           );
         })}

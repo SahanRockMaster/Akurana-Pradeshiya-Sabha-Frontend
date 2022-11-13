@@ -49,7 +49,7 @@ const Main = withRouter(({ location }) => {
       <Route path="/AdminFormView" exact component={AdminFormView} />
       <Route path="/events" exact component={Events} />
       <Route path="/forms" exact component={ApplicationView} />
-      <Route path="/EventDetails" exact component={EventDetails} />
+      <Route path="/EventDetails/:event" exact component={EventDetails} />
       <Route path="/BlogPostPortal" exact component={BlogPostPortal} />  
       {location.pathname !== '/adminDashboard' && location.pathname !== '/BlogPostPortal' &&  location.pathname !== '/AdminFormView' && <Footer />}
     </div>
