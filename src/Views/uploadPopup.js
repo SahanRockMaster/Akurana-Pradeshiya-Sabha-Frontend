@@ -20,8 +20,7 @@ import DeleteButton from '@material-ui/icons/Delete';
 import ImageUpload from '@mui/icons-material/AddToPhotos';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
-import axios from "axios";
-
+import axios from 'axios';
 
 const style = makeStyles({
   titleItemRight: {
@@ -50,65 +49,27 @@ const style = makeStyles({
 
 export default function Popup(props) {
   const [selectedImages, setSelectedImages] = useState([]);
-  const [imageFiles, setImageFiles] = useState([]);
+  //const [imageFiles, setImageFiles] = useState([]);
   const { openPopup, setOpenPopup } = props;
   const [selectWidth, setSelectWidth] = useState(10);
   const [selectHeight, setSelectHeight] = useState(10);
 
-  const [selectImage1, setselectImage1] = useState(null);
-  const [selectImage2, setselectImage2] = useState(null);
-  const [selectImage3, setselectImage3] = useState(null);
-  const [selectImage4, setselectImage4] = useState(null);
-  const [selectImage5, setselectImage5] = useState(null);
-  const [selectImage6, setselectImage6] = useState(null);
-
-
-  const [ximages, setImages] = useState();
+  const [ximages, setXimages] = useState([]);
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
-
 
   const onSelectFile = (event) => {
     const selectedFile = event.target.files;
     const selectedFilesArray = Array.from(selectedFile);
-    setImages(event.target.files[0]);
+    setXimages(event.target.files);
 
     if (selectedFilesArray.length <= 6) {
       const imagesArray = selectedFilesArray.map((file) => {
         return URL.createObjectURL(file);
       });
 
-      if (imagesArray.length === 1) {
-        setselectImage1(imagesArray[0]);
-      } else if (imagesArray.length === 2) {
-        setselectImage1(imagesArray[0]);
-        setselectImage2(imagesArray[1]);
-      } else if (imagesArray.length === 3) {
-        setselectImage1(imagesArray[0]);
-        setselectImage2(imagesArray[1]);
-        setselectImage3(imagesArray[2]);
-      } else if (imagesArray.length === 4) {
-        setselectImage1(imagesArray[0]);
-        setselectImage2(imagesArray[1]);
-        setselectImage3(imagesArray[2]);
-        setselectImage4(imagesArray[3]);
-      } else if (imagesArray.length === 5) {
-        setselectImage1(imagesArray[0]);
-        setselectImage2(imagesArray[1]);
-        setselectImage3(imagesArray[2]);
-        setselectImage4(imagesArray[3]);
-        setselectImage5(imagesArray[4]);
-      } else {
-        setselectImage1(imagesArray[0]);
-        setselectImage2(imagesArray[1]);
-        setselectImage3(imagesArray[2]);
-        setselectImage4(imagesArray[3]);
-        setselectImage5(imagesArray[4]);
-        setselectImage6(imagesArray[5]);
-      }
-
       setSelectedImages(imagesArray);
-      setImageFiles(imagesArray);
+      //setImageFiles(imagesArray);
 
       if (imagesArray.length === 3 || imagesArray.length < 3) {
         setSelectWidth(310);
@@ -116,23 +77,14 @@ export default function Popup(props) {
       } else if (imagesArray.length > 3) {
         setSelectWidth(610);
         setSelectHeight(610);
-        console.log(imagesArray);
       }
     } else {
       const images = selectedFilesArray.slice(0, 6);
       const imagesArray = images.map((file) => {
         return URL.createObjectURL(file);
       });
-
-      setselectImage1(imagesArray[0]);
-      setselectImage2(imagesArray[1]);
-      setselectImage3(imagesArray[2]);
-      setselectImage4(imagesArray[3]);
-      setselectImage5(imagesArray[4]);
-      setselectImage6(imagesArray[5]);
-
+      //setImageFiles(imagesArray);
       setSelectedImages(imagesArray);
-      setImageFiles(imagesArray);
 
       if (imagesArray.length === 3 || imagesArray.length < 3) {
         setSelectWidth(610);
@@ -149,48 +101,44 @@ export default function Popup(props) {
     clearFields();
   };
 
+  const remove = (value) => {
+    // "current" contains the latest state array
+    const imageArray = Object.values(ximages);
+    if (ximages.length > 6) {
+      const sixElements = imageArray.filter((l) => imageArray.indexOf(l) <= 5);
+      console.log(sixElements);
+      setXimages(sixElements.filter((e) => e.name !== value));
+    } else {
+      const values = Object.values(ximages);
+      setXimages(values.filter((e) => e.name !== value));
+    }
+  };
+
   function deleteHandler(image) {
     setSelectedImages(selectedImages.filter((e) => e !== image));
+
+    const index = selectedImages.indexOf(image);
+    const value = ximages[index].name;
+    remove(value);
+    //console.log();
     URL.revokeObjectURL(image);
-    if (selectedImages.length === 1) {
-      setselectImage1(selectedImages[0]);
-    } else if (selectedImages.length === 2) {
-      setselectImage1(selectedImages[0]);
-      setselectImage2(selectedImages[1]);
-    } else if (selectedImages.length === 3) {
-      setselectImage1(selectedImages[0]);
-      setselectImage2(selectedImages[1]);
-      setselectImage3(selectedImages[2]);
-    } else if (selectedImages.length === 4) {
-      setselectImage1(selectedImages[0]);
-      setselectImage2(selectedImages[1]);
-      setselectImage3(selectedImages[2]);
-      setselectImage4(selectedImages[3]);
-    } else if (selectedImages.length === 5) {
-      setselectImage1(selectedImages[0]);
-      setselectImage2(selectedImages[1]);
-      setselectImage3(selectedImages[2]);
-      setselectImage4(selectedImages[3]);
-      setselectImage5(selectedImages[4]);
-    } else {
-      setselectImage1(selectedImages[0]);
-      setselectImage2(selectedImages[1]);
-      setselectImage3(selectedImages[2]);
-      setselectImage4(selectedImages[3]);
-      setselectImage5(selectedImages[4]);
-      setselectImage6(selectedImages[5]);
-    }
   }
 
   const handleSubmit = async (event) => {
-    
-
     event.preventDefault();
+
+    console.log(ximages.length);
 
     let token = localStorage.getItem('token');
 
     let data = new FormData();
-    data.append('files[]', ximages);
+    if (ximages.length <= 6) {
+      for (var i = 0; i < ximages.length; i++) {
+        data.append('files[]', ximages[i]);
+      }
+    } else {
+      for (var j = 0; j < 6; j++) data.append('files[]', ximages[j]);
+    }
     data.append('name', title);
     data.append('description', description);
 
@@ -199,27 +147,29 @@ export default function Popup(props) {
     };
 
     await axios
-      .post(`http://local.backend-dev/api/posts`, data, config)
+      .post(`http://localhost:8000/api/posts`, data, config)
       .then((response) => {
+        console.log(response);
         if (response.status === 200) {
           clearFields();
           setOpenPopup(false);
           props.fetchData(localStorage.getItem('token'));
-          props.toastPOP(1,'Blog Post successfully Added!');
+          props.toastPOP(1, 'Blog Post successfully Added!');
         }
       })
       .catch((error) => {
-        props.toastPOP(2,error.message);
+        console.log(error);
+        props.toastPOP(2, error.message);
       });
   };
 
   const clearFields = () => {
-    setImages(null);
+    setXimages(null);
     setSelectedImages([]);
-    setImageFiles([]);
+    // setImageFiles([]);
     setTitle(null);
     setDescription(null);
-  }
+  };
 
   const classes = style();
 
@@ -263,7 +213,9 @@ export default function Popup(props) {
           fullWidth
           variant="outlined"
           color="warning"
-          onChange={(e) => { setTitle(e.target.value) }}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
         />
         <ImageList sx={{ width: { selectWidth }, height: { selectHeight } }}>
           <ImageListItem key="Subheader" cols={2} rows={3}>
@@ -310,7 +262,7 @@ export default function Popup(props) {
           color="warning"
           multiline
           rows={4}
-          onChange={(e) => (setDescription(e.target.value))}
+          onChange={(e) => setDescription(e.target.value)}
         />
       </DialogContent>
       <DialogActions>
