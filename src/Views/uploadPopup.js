@@ -63,7 +63,7 @@ export default function Popup(props) {
   const [selectImage6, setselectImage6] = useState(null);
 
 
-  const [ximages, setImages] = useState();
+  const [images, setImages] = useState([]);
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
 
@@ -71,7 +71,7 @@ export default function Popup(props) {
   const onSelectFile = (event) => {
     const selectedFile = event.target.files;
     const selectedFilesArray = Array.from(selectedFile);
-    setImages(event.target.files[0]);
+    setImages(event.target.files)
 
     if (selectedFilesArray.length <= 6) {
       const imagesArray = selectedFilesArray.map((file) => {
@@ -108,7 +108,6 @@ export default function Popup(props) {
       }
 
       setSelectedImages(imagesArray);
-      setImageFiles(imagesArray);
 
       if (imagesArray.length === 3 || imagesArray.length < 3) {
         setSelectWidth(310);
@@ -183,14 +182,47 @@ export default function Popup(props) {
   }
 
   const handleSubmit = async (event) => {
-    
+
 
     event.preventDefault();
 
     let token = localStorage.getItem('token');
 
     let data = new FormData();
-    data.append('files[]', ximages);
+
+    console.log(setselectImage1)
+    console.log(setselectImage2)
+    console.log(setselectImage3)
+
+    if (images.length === 1) {
+      data.append('files[]', images[0]);
+    } else if (images.length === 2) {
+      data.append('files[]', images[0]);
+      data.append('files[]', images[1]);
+    } else if (images.length === 3) {
+      data.append('files[]', images[0]);
+      data.append('files[]', images[1]);
+      data.append('files[]', images[2]);
+    } else if (images.length === 4) {
+      data.append('files[]', images[0]);
+      data.append('files[]', images[1]);
+      data.append('files[]', images[2]);
+      data.append('files[]', images[3]);
+    } else if (images.length === 5) {
+      data.append('files[]', images[0]);
+      data.append('files[]', images[1]);
+      data.append('files[]', images[2]);
+      data.append('files[]', images[3]);
+      data.append('files[]', images[4]);
+    } else {
+      data.append('files[]', images[0]);
+      data.append('files[]', images[1]);
+      data.append('files[]', images[2]);
+      data.append('files[]', images[3]);
+      data.append('files[]', images[4]);
+      data.append('files[]', images[5]);
+    }
+
     data.append('name', title);
     data.append('description', description);
 
@@ -202,19 +234,21 @@ export default function Popup(props) {
       .post(`http://local.backend-dev/api/posts`, data, config)
       .then((response) => {
         if (response.status === 200) {
+          console.log(response)
           clearFields();
           setOpenPopup(false);
           props.fetchData(localStorage.getItem('token'));
-          props.toastPOP(1,'Blog Post successfully Added!');
+          props.toastPOP(1, 'Blog Post successfully Added!');
         }
       })
       .catch((error) => {
-        props.toastPOP(2,error.message);
+        console.log(error)
+        props.toastPOP(2, error.message);
       });
   };
 
   const clearFields = () => {
-    setImages(null);
+    setImages([])
     setSelectedImages([]);
     setImageFiles([]);
     setTitle(null);
