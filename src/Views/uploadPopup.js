@@ -115,7 +115,6 @@ export default function Popup(props) {
       } else if (imagesArray.length > 3) {
         setSelectWidth(610);
         setSelectHeight(610);
-        console.log(imagesArray);
       }
     } else {
       const images = selectedFilesArray.slice(0, 6);
@@ -190,10 +189,6 @@ export default function Popup(props) {
 
     let data = new FormData();
 
-    console.log(setselectImage1)
-    console.log(setselectImage2)
-    console.log(setselectImage3)
-
     if (images.length === 1) {
       data.append('files[]', images[0]);
     } else if (images.length === 2) {
@@ -234,7 +229,6 @@ export default function Popup(props) {
       .post(`http://local.backend-dev/api/posts`, data, config)
       .then((response) => {
         if (response.status === 200) {
-          console.log(response)
           clearFields();
           setOpenPopup(false);
           props.fetchData(localStorage.getItem('token'));

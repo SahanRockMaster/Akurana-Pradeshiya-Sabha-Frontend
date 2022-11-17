@@ -41,7 +41,7 @@ const EventDetails = () => {
             setDescription(post.description)
             let array = [];
             post.post_attachments.forEach((img) => {
-              array.push(img.attachment);
+              array.push('http://local.backend-dev/'+img.attachment);
             });
             setImages(array)
           }
