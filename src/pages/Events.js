@@ -18,7 +18,7 @@ function Events() {
 
   const fetchData = async () => {
     await axios
-      .get("http://local.backend-dev/api/getAllPosts")
+      .get("http://127.0.0.1:8000/api/getAllPosts")
       .then((response) => {
         setPost(response.data.data);
       })

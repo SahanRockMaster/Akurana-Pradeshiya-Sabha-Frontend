@@ -33,7 +33,7 @@ const EventDetails = () => {
   const fetchData = async (id) => {
 
     await axios
-      .get("http://local.backend-dev/api/getAllPosts")
+      .get("http://127.0.0.1:8000/api/getAllPosts")
       .then((response) => {
         response.data.data.forEach((post) => {
           if (post.id === parseInt(id)) {
