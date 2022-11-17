@@ -60,8 +60,9 @@ export default function Popup(props) {
       .put(`http://127.0.0.1:8000/api/posts/${postId}`, post, config)
       .then((response) => {
         if (response.status === 200) {
-          props.toastPOP(1,'Blog Post Updated Successfully!');
+          props.toastPOP(1, 'Blog Post Updated Successfully!');
           props.fetchData(localStorage.getItem('token'));
+          console.log(response);
         }
       })
       .catch((error) => {
@@ -77,7 +78,7 @@ export default function Popup(props) {
     setPostId(props.post !== undefined? props.post.id: null);
     setPostTitle(props.post !== undefined? props.post.name: null);
     setPostDescription(props.post !== undefined? props.post.description: null);
-  });
+  }, [props.post]);
 
   return (
     <Dialog open={openUpdPopup} maxWidth="md">
@@ -124,37 +125,7 @@ export default function Popup(props) {
           disabled={true}
           value={postTitle}
         />
-        {/* <ImageList sx={{ width: { selectWidth }, height: { selectHeight } }}>
-          <ImageListItem key="Subheader" cols={2} rows={3}>
-            <ListSubheader component="div" spacing={0}>
-              Image Preview
-            </ListSubheader>
-          </ImageListItem>
-          {selectedImages.map((item, index) => (
-            <ImageListItem key={item}>
-              <img
-                src={item}
-                srcSet={item}
-                alt={item}
-                loading="lazy"
-                height="300"
-                width="300"
-              />
-              <ImageListItemBar
-                title={`Image: ${index + 1}`}
-                actionIcon={
-                  <IconButton
-                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                    aria-label={`Delete image ${item}`}
-                    onClick={() => deleteHandler(item)}
-                  >
-                    <DeleteButton />
-                  </IconButton>
-                }
-              />
-            </ImageListItem>
-          ))}
-        </ImageList> */}
+      
         <DialogContentText>
           <br></br>To update the blog post information of this website, please
           enter the description.
