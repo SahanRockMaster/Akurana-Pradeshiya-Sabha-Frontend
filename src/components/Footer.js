@@ -34,7 +34,7 @@ function Footer() {
             <tr>
               <td className='newtb'>Help</td>
               <td calssname="newtb">forms</td>
-              <td calssname="newtb">Blog</td>
+              <td calssname="newtb">Events</td>
               <td calssname="newtb">Dwonload</td>
             </tr>
             <tr className='tablerow'>
@@ -44,10 +44,10 @@ function Footer() {
               <td calssname="tableData3">Contact Us</td>
             </tr>
             <tr >
-              <td calssname="tableData3">Help</td>
-              <td calssname="tableData3">forms</td>
-              <td calssname="tableData3">Blog</td>
-              <td calssname="tableData3">Dwonload</td>
+              <td calssname="tableData3">E Services</td>
+              <td calssname="tableData3">Parties and candidates</td>
+              <td calssname="tableData3">For Voters</td>
+              <td calssname="tableData3">Misc. Info</td>
             </tr>
             <tr>
               <td colSpan="4"><center><p> &copy; 2022 Akurana Pradeshiya Sabha</p></center></td>

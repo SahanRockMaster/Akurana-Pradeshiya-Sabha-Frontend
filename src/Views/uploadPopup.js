@@ -149,7 +149,7 @@ export default function Popup(props) {
     await axios
       .post(`http://127.0.0.1:8000/api/posts`, data, config)
       .then((response) => {
-        console.log(response);
+        
         if (response.status === 200) {
           clearFields();
           setOpenPopup(false);
