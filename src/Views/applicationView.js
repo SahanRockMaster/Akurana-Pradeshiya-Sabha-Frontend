@@ -11,6 +11,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import DownloadIcon from '@mui/icons-material/Download';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
+import { styled } from '@mui/material/styles';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
 
 const style = makeStyles({
   titleItemCenter: {
@@ -26,6 +30,14 @@ const style = makeStyles({
   },
 });
 
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
+
 export default function RecipeReviewCard() {
   const classes = style();
   const token = localStorage.getItem('token');
@@ -38,14 +50,14 @@ export default function RecipeReviewCard() {
 
   async function fetchData() {
     await axios
-      .get('http://local.backend-dev/api/getAllApplications')
+      .get('http://localhost:8000/api/getAllApplications')
       .then((response) => {
         if (response?.status === 200) {
           setData(response.data.data);
         }
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         toast.warning(error.message);
       })
       .finally(() => {
@@ -56,21 +68,37 @@ export default function RecipeReviewCard() {
   return (
     <div>
       <ToastContainer />
-      <Stack direction="row" spacing={2}>
-        {data.map((app) => {
+      {/* <Stack
+        direction="row"
+        sx={{
+          marginBottom: 8,
+          marginLeft: 5,
+          marginTop: 5,
+        }}
+      > */}
+      <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+      {/* <Grid item xs={6}>
+          <Item> */}
+          {data.map((app) => {
           return (
+            <Grid item xs={2} sm={4} md={4} >
+          <Item>
             <Card
-              sx={{ maxWidth: 345, marginBottom: 8, marginLeft: 5, marginTop: 5 }}
+              sx={{
+                maxWidth: 345,
+                maxHeight: 440,
+                marginBottom: 5,
+                marginLeft: 5,
+                marginTop: 5,
+              }}
               boxShadow={10}
             >
-              <CardHeader
-                title={app.name}
-                subheader="September 14, 2016"
-              />
+              <CardHeader title={app.name} subheader="September 14, 2016" />
               <CardMedia
                 component="img"
                 height="194"
-                image="https://thumbs.dreamstime.com/b/beautiful-rain-forest-ang-ka-nature-trail-doi-inthanon-national-park-thailand-36703721.jpg"
+                image={`http://localhost:8000/${app.application_attachments[0].attachment}`}
                 alt="Paella dish"
               />
               <CardContent>
@@ -79,7 +107,7 @@ export default function RecipeReviewCard() {
                 </Typography>
               </CardContent>
               <CardActions disableSpacing>
-                {app.application_attachments.length !== 0 &&
+                {app.application_attachments.length !== 0 && (
                   <Button
                     variant="contained"
                     startIcon={<DownloadIcon />}
@@ -87,17 +115,62 @@ export default function RecipeReviewCard() {
                     onClick={() => {
                       //setOpenUpdPopup(true);
                     }}
-
                   >
                     <b>Download</b>
-                  </Button>}
-
+                  </Button>
+                )}
               </CardActions>
             </Card>
-          )
+            </Item>
+        </Grid>
+          );
         })}
-
-      </Stack>
+          {/* </Item>
+        </Grid> */}
+      </Grid>
+      </Box>
+        {/* {data.map((app) => {
+          return (
+            <Card
+              sx={{
+                maxWidth: 345,
+                maxHeight: 460,
+                marginBottom: 8,
+                marginLeft: 5,
+                marginTop: 5,
+              }}
+              boxShadow={10}
+            >
+              <CardHeader title={app.name} subheader="September 14, 2016" />
+              <CardMedia
+                component="img"
+                height="194"
+                image={`http://localhost:8000/${app.application_attachments[0].attachment}`}
+                alt="Paella dish"
+              />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  {app.description}
+                </Typography>
+              </CardContent>
+              <CardActions disableSpacing>
+                {app.application_attachments.length !== 0 && (
+                  <Button
+                    variant="contained"
+                    startIcon={<DownloadIcon />}
+                    className={classes.titleItemCenter}
+                    onClick={() => {
+                      //setOpenUpdPopup(true);
+                    }}
+                  >
+                    <b>Download</b>
+                  </Button>
+                )}
+              </CardActions>
+            </Card>
+          );
+        })} */}
+      {/* </Stack> */}
     </div>
   );
 }
