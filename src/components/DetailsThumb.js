@@ -14,3 +14,4 @@ export class DetailsThumb extends Component {
 }
 
 export default DetailsThumb;
+

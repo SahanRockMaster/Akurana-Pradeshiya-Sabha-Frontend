@@ -23,23 +23,20 @@ const AdminLogin = () => {
     e.preventDefault();
 
     const newEntry = { email: email, password: password };
-
-    await axios
-      .post('http://localhost:8000/api/login', newEntry)
-      .then((response) => {
-        localStorage.setItem('token', response.data.data.token);
-        if (response?.status === 200) {
-          localStorage.setItem('user', response.data.data.name);
-          history.push('/adminDashboard');
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 401) {
-          setError(error.response.data.message);
-        } else {
-          setError('Login Failed! Try Again!');
-        }
-      });
+    
+    await axios.post('http://127.0.0.1:8000/api/login', newEntry,).then((response) => {
+      localStorage.setItem('token', response.data.data.token);
+      if (response?.status === 200){
+        localStorage.setItem('user', response.data.data.name);
+        history.push('/adminDashboard');
+      };
+    }).catch((error) => {
+      if (error.response.status === 401) {
+        setError(error.response.data.message);
+      }else{
+        setError('Login Failed! Try Again!');
+      }
+    });
 
     // if(!newEntry.email === '' && !newEntry.email === '' ) {
     setAllentry([newEntry]);

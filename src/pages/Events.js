@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import EventsItem from '../components/EventsItem';
 import '../styles/Events.css';
@@ -40,9 +41,11 @@ function Events() {
                   : post.post_attachments[0].attachment
               }
               name={post.name}
+
               event={() => {
                 history.push(`/EventDetails/${post.id}`);
               }}
+
             />
           );
         })}

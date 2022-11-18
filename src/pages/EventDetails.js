@@ -22,6 +22,7 @@ const EventDetails = () => {
       xx[i].className = xx[i].className.replace('active', '');
     }
     xx[index].className = 'active';
+
   };
 
   useEffect(() => {
@@ -61,6 +62,7 @@ const EventDetails = () => {
           <div className="row">
             <h2>{name}</h2>
           </div>
+
 
           <p>{description}</p>
 
